@@ -2,5 +2,6 @@
 
 list::list()
 {
-
+  head = nullptr;
+  tail = nullptr;
 }
