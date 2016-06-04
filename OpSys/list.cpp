@@ -10,14 +10,14 @@ list::list()
 void list::addPCB() //change to data?
 {
   //error checks
-  Node obj = new Node(); //create a node with all the data
+  Node * obj = new Node(); //create a node with all the data
   if(head == nullptr){
       head = obj;
       tail = obj;
   }
   else{
-      obj->left = tail;
-      tail->right = obj;
+      obj->setLeft(tail);
+      tail->setRight(obj);
       tail = obj;
     }
 
@@ -36,8 +36,8 @@ int list::deletePCB(){
       return 0; //? Or should I be returning something else
     }
   else{
-      temp = head->next;
-      head->right = nullptr; //avoid dangling pointer
+      Node * temp = head->getRight();
+      head->setRight(nullptr); //avoid dangling pointer
       //int PID = head.PID?
       delete head;
       head = temp; //set head to next node
@@ -46,12 +46,12 @@ int list::deletePCB(){
 
 }
 
-list::printVals()
+void list::printVals()
 {
-  temp = head;
+  Node * temp = head;
   //iterate to end of list
   while(temp != nullptr){
       //cout<< temp.data
-      temp = temp->next;
+      temp = temp->getRight();
     }
 }

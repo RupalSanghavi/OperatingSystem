@@ -5,14 +5,15 @@
 class list
 {
 private:
-  Node head;
-  Node tail;
+  Node * head;
+  Node * tail;
 public:
   list();
-  addPCB();
-  addPCB(int pos); //change to data?
-  deletePCB(int PID); //change to data?
-  printVals();
+  void addPCB();
+  void addPCB(int pos); //change to data?
+  int deletePCB(int PID); //change to data?
+  int deletePCB();
+  void printVals();
 };
 
 #endif // LIST_H
