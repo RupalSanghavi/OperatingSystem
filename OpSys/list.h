@@ -9,7 +9,8 @@ private:
   Node tail;
 public:
   list();
-  addPCB(Node obj); //change to data?
+  addPCB();
+  addPCB(int pos); //change to data?
   deletePCB(int PID); //change to data?
   printVals();
 };

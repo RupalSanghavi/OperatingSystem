@@ -7,7 +7,7 @@ list::list()
   tail = nullptr;
 }
 //default, add to back of queue
-list::addPCB() //change to data?
+void list::addPCB() //change to data?
 {
   //error checks
   Node obj = new Node(); //create a node with all the data
@@ -23,16 +23,35 @@ list::addPCB() //change to data?
 
 }
 //if position given
-list::addPCB(int pos){
+void list::addPCB(int pos){
 
 }
 
-list::deletePCB(int PID) //change to data?
-{
+int list::deletePCB(int PID){//change to data?
+
+}
+int list::deletePCB(){
+  //if empty queue
+  if(head == nullptr){
+      return 0; //? Or should I be returning something else
+    }
+  else{
+      temp = head->next;
+      head->right = nullptr; //avoid dangling pointer
+      //int PID = head.PID?
+      delete head;
+      head = temp; //set head to next node
+      //return PID;
+    }
 
 }
 
 list::printVals()
 {
-
+  temp = head;
+  //iterate to end of list
+  while(temp != nullptr){
+      //cout<< temp.data
+      temp = temp->next;
+    }
 }
