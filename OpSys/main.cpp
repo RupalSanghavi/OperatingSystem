@@ -1,5 +1,7 @@
 #include <iostream>
-void processMgmt();
+#include "list.h";
+#include "node.h";
+void processMgmt(List*& ready1, List*& waiting1);
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -7,6 +9,8 @@ int main(int argc, char *argv[])
   cout << "Hello World!" << endl;
   bool correct = false;
   string choice ="";
+  List * ready = new List();
+  List * waiting = new List();
   cout << "============================== \n";
      cout << "SIMULATED OPERATING SYSTEM \n";
      cout << "============================== \n";
@@ -25,7 +29,7 @@ int main(int argc, char *argv[])
 
          // Conditional to run correct mode for the choice or if wrong choice displays a error message
          if(choice == "1")
-             processMgmt();
+             processMgmt(ready, waiting);
          else if(choice == "2"){}
              //
          else if(choice == "0")
@@ -33,10 +37,10 @@ int main(int argc, char *argv[])
          else
              cout << "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
      }
-
+  ready->printVals();
   return 0;
 }
-void processMgmt(){
+void processMgmt(List *&ready1, List *&waiting1){
      bool correct = false;
      string choice ="";
      cout << "============================== \n";
@@ -56,9 +60,20 @@ void processMgmt(){
          cout << endl;
 
          // Conditional to run correct mode for the choice or if wrong choice displays a error message
-         if(choice == "1"){}
+         if(choice == "1"){
+             cout<< "Enter Process Information: ";
+             int process;
+             cin>> process;
+             ready1->addPCB(process);
+           }
 
-         else if(choice == "2"){}
+         else if(choice == "2"){
+             cout<< "Deleting PCB at beginning of queue "<<endl;
+             int PID = ready1->deletePCB();
+             if(PID != 0)
+                cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
+             else{}
+           }
              //
          else if(choice == "0")
              correct = true;

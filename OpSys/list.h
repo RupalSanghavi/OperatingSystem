@@ -2,13 +2,13 @@
 #define LIST_H
 #include "node.h";
 
-class list
+class List
 {
 private:
   Node * head;
   Node * tail;
 public:
-  list();
+  List();
   void addPCB();
   void addPCB(int pos); //change to data?
   int deletePCB(int PID); //change to data?
