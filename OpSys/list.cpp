@@ -8,14 +8,21 @@ List::List()
   tail = nullptr;
 }
 //default, add to back of queue
-void List::addPCB() //change to data?
+void List::addPCB(int pos, int data) //change to data?
 {
+  Node * obj = new Node(data); //create a node with all the data
+  Node * temp = head;
+  for(int i = 0; i < pos; i++){ //PROB NEED TO CHANGE 0
+      temp = temp->getRight();
+    }
+  temp->setLeft(obj); //insert node to left of current node
+  temp->getLeft->setRight(obj); //attach node to right of previous node
 
 }
 //if position given
-void List::addPCB(int pos){
+void List::addPCB(int data){
   //error checks
-  Node * obj = new Node(pos); //create a node with all the data
+  Node * obj = new Node(data); //create a node with all the data
   if(head == nullptr){
       head = obj;
       tail = obj;
@@ -27,10 +34,18 @@ void List::addPCB(int pos){
     }
 
 }
-
-int List::deletePCB(int PID){//change to data?
-
+//delete with given PID
+int List::deletePCB(int PID){
+  Node* temp = head;
+  //iterate till you find PCB/node with matching PID
+  while(temp->getPID != PID){
+      temp = temp->getRight();
+    }
+  temp->getRight()->setLeft(temp->getLeft()); //set right node's left pointer to point to left node
+  temp->getLeft()->setRight(temp->getRight()); //and the opposite
+  delete temp;
 }
+//default, delete from head
 int List::deletePCB(){
   //if empty queue
   if(head == nullptr){

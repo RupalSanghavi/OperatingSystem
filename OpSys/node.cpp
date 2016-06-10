@@ -20,6 +20,10 @@ void Node::setRight(Node* obj){
 Node * Node::getRight(){
   return this->right;
 }
+Node * Node::getLeft(){
+  return this->left;
+}
+
 int Node::getPID(){
   return PID;
 }
