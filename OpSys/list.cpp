@@ -16,7 +16,7 @@ void List::addPCB(int pos, int data) //change to data?
       temp = temp->getRight();
     }
   temp->setLeft(obj); //insert node to left of current node
-  temp->getLeft->setRight(obj); //attach node to right of previous node
+  temp->getLeft()->setRight(obj); //attach node to right of previous node
 
 }
 //if position given
@@ -38,7 +38,7 @@ void List::addPCB(int data){
 int List::deletePCB(int PID){
   Node* temp = head;
   //iterate till you find PCB/node with matching PID
-  while(temp->getPID != PID){
+  while(temp->getPID() != PID){
       temp = temp->getRight();
     }
   temp->getRight()->setLeft(temp->getLeft()); //set right node's left pointer to point to left node
