@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
-#include "list.h";
-#include "node.h";
+#include "list.h"
+#include "node.h"
 using namespace std;
 
 void processMgmt(List*& ready1, List*& waiting1);
