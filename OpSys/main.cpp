@@ -1,11 +1,14 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <sstream>
+#include <fstream>
 #include "list.h"
 #include "node.h"
 using namespace std;
 
 void processMgmt(List*& ready1, List*& waiting1);
-void firstComeFirstServe(string file);
+void firstComeFirstServe(string file, ifstream &fin);
 
 int main(int argc, char *argv[])
 {
@@ -103,11 +106,24 @@ void processMgmt(List *&ready1, List *&waiting1){
                break;
              }
            case 5: {
-               cout<<"Please enter name of text file.";
+               cout<<"Please enter name of text file: ";
                string file;
                //add check to see if actually able to open text file
                cin>>file;
-               firstComeFirstServe(file);
+               ifstream fin;
+               fin.open(file);
+               bool open = false;
+               while(open!=true){
+                   if(fin.is_open()){
+                       cout<<"File opened successfully. "<<endl;
+                       open = true;
+                   }
+                   else{
+                       cout<<"Error opening file. Please retry: ";
+                       cin>> file;
+                   }
+               }
+               firstComeFirstServe(file, fin);
 
              }
            case 0:{
@@ -142,6 +158,21 @@ void processMgmt(List *&ready1, List *&waiting1){
      }
 
 }
-void firstComeFirstServe(string file){
-
+void firstComeFirstServe(string file, ifstream &fin){
+    string line = "";
+    vector<int> data;
+    while(!fin.eof()){
+        fin>>line;
+        stringstream ss(line);
+        int x;
+        while(ss>>x){
+            data.push_back(x);
+            if(ss.peek() == ',')
+                ss.ignore();
+        }
+        for (int i=0; i< data.size(); i++)
+            std::cout << data.at(i)<<std::endl;
+        line = "";
+        data.clear();
+    }
 }
