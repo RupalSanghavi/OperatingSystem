@@ -1,8 +1,11 @@
 #include <iostream>
+#include <string>
 #include "list.h";
 #include "node.h";
-void processMgmt(List*& ready1, List*& waiting1);
 using namespace std;
+
+void processMgmt(List*& ready1, List*& waiting1);
+void firstComeFirstServe(string file);
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +59,8 @@ void processMgmt(List *&ready1, List *&waiting1){
               << "\t [2] Default Addition (Add PCB to tail of queue) \n"
               << "\t [3] Delete a PCB with a given PID \n"
               << "\t [4] Default Deletion (given a certain PID) \n"
-              << "\t [5] exit\n" <<  endl;
+              << "\t [5] First-Come-First-Serve Scheduling \n"
+              << "\t [0] exit\n" <<  endl;
          cout << "Select: "<< endl;
          cin >> choice;
          cout << endl;
@@ -98,7 +102,15 @@ void processMgmt(List *&ready1, List *&waiting1){
                else{}
                break;
              }
-           case 5:{
+           case 5: {
+               cout<<"Please enter name of text file.";
+               string file;
+               //add check to see if actually able to open text file
+               cin>>file;
+               firstComeFirstServe(file);
+
+             }
+           case 0:{
                correct = true;
                break;
              }
@@ -128,5 +140,8 @@ void processMgmt(List *&ready1, List *&waiting1){
          else
              cout << "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;*/
      }
+
+}
+void firstComeFirstServe(string file){
 
 }

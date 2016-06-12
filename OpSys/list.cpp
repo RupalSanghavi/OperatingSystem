@@ -38,12 +38,22 @@ void List::addPCB(int data){
 int List::deletePCB(int PID){
   Node* temp = head;
   //iterate till you find PCB/node with matching PID
+  if(temp == nullptr){
+      cout<<"Queue is already empty!";
+      return 0;
+    }
   while(temp->getPID() != PID){
       temp = temp->getRight();
+      if(temp == nullptr){
+          cout<<"Queue does not have PCB with PID number "<<PID<<endl;
+          return 0;
+        }
     }
   temp->getRight()->setLeft(temp->getLeft()); //set right node's left pointer to point to left node
   temp->getLeft()->setRight(temp->getRight()); //and the opposite
+  int retPID = temp->getPID();
   delete temp;
+  return retPID;
 }
 //default, delete from head
 int List::deletePCB(){
