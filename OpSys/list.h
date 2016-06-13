@@ -9,7 +9,7 @@ private:
   Node * tail;
 public:
   List();
-  void addPCB(int data);
+  void addPCB(int PID1, int arrivalTime1, int burstTime1, int priority1);
   void addPCB(int pos, int data); //change to data?
   int deletePCB(int PID); //change to data?
   int deletePCB();

@@ -18,14 +18,19 @@ private:
   */
   Node * left;
   Node * right;
+  int arrivalTime;
+  int burstTime;
+  int priority;
+    
 public:
   Node();
-  Node(int PID);
+  Node(int PID1, int arrivalTime1, int burstTime1, int priority1);
   void setLeft(Node * obj);
   void setRight(Node* obj);
   Node *getRight();
   Node *getLeft();
   int getPID();
+  void display();
 };
 
 #endif // NODE_H

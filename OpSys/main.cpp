@@ -8,7 +8,7 @@
 using namespace std;
 
 void processMgmt(List*& ready1, List*& waiting1);
-void firstComeFirstServe(string file, ifstream &fin);
+void firstComeFirstServe(string file, ifstream &fin, List*& ready2);
 
 int main(int argc, char *argv[])
 {
@@ -81,10 +81,10 @@ void processMgmt(List *&ready1, List *&waiting1){
                break;
              }
            case 2: {
-               cout<<"Enter data"<<endl;
+               /*cout<<"Enter data"<<endl;
                int randData;
                cin>> randData;
-               ready1->addPCB(randData);
+               ready1->addPCB(randData);*/
                break;
              }
            case 3: {
@@ -121,9 +121,10 @@ void processMgmt(List *&ready1, List *&waiting1){
                    else{
                        cout<<"Error opening file. Please retry: ";
                        cin>> file;
+                       fin.open(file);
                    }
                }
-               firstComeFirstServe(file, fin);
+               firstComeFirstServe(file, fin, ready1);
 
              }
            case 0:{
@@ -158,11 +159,14 @@ void processMgmt(List *&ready1, List *&waiting1){
      }
 
 }
-void firstComeFirstServe(string file, ifstream &fin){
+void firstComeFirstServe(string file, ifstream &fin, List*& ready2){
     string line = "";
     vector<int> data;
     while(!fin.eof()){
-        fin>>line;
+        getline(fin,line,'\n');
+        if(line == "")//if eof didn't work
+            break;
+        //fin>>line;
         stringstream ss(line);
         int x;
         while(ss>>x){
@@ -170,9 +174,11 @@ void firstComeFirstServe(string file, ifstream &fin){
             if(ss.peek() == ',')
                 ss.ignore();
         }
-        for (int i=0; i< data.size(); i++)
-            std::cout << data.at(i)<<std::endl;
+        ready2->addPCB(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
+        //for (int i=0; i< data.size(); i++)
+            //std::cout << data.at(i)<<std::endl;
         line = "";
         data.clear();
     }
 }
+//void read file
