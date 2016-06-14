@@ -9,6 +9,7 @@ using namespace std;
 
 void processMgmt(List*& ready1, List*& waiting1);
 void firstComeFirstServe(ifstream &fin, List*& ready2);
+void npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
 
 int main(int argc, char *argv[])
@@ -114,7 +115,9 @@ void processMgmt(List *&ready1, List *&waiting1){
 
              }
              case 6: {
-                 
+                 ifstream fin;
+                 readFile(fin);
+                 npPriority(fin, ready1);
              }
            case 0:{
                correct = true;
@@ -170,6 +173,35 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
         finBurst = data[2]; //keep track of last burst time
         //for (int i=0; i< data.size(); i++)
             //std::cout << data.at(i)<<std::endl;
+        line = "";
+        data.clear();
+    }
+    waitTime -= finBurst; //subtract last burst time to calculate waitTime
+    cout<<"Average Waiting Time: "<<waitTime<<endl;
+    
+}
+void npPriority(ifstream &fin, List*& ready2){
+    string line = "";
+    int waitTime = 0;
+    int finBurst = 0;
+    vector<int> data;
+    while(!fin.eof()){
+        getline(fin,line,'\n');
+        if(line == "")//if eof didn't work
+            break;
+        //fin>>line;
+        stringstream ss(line);
+        int x;
+        while(ss>>x){
+            data.push_back(x);
+            if(ss.peek() == ',')
+                ss.ignore();
+        }
+        ready2->priorityInsert(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
+        //waitTime += data[2]; //add burst time
+        //finBurst = data[2]; //keep track of last burst time
+        //for (int i=0; i< data.size(); i++)
+        //std::cout << data.at(i)<<std::endl;
         line = "";
         data.clear();
     }

@@ -41,3 +41,6 @@ void Node::display(){
     cout<<this->PID << " "<< this->arrivalTime<<" "<<this->burstTime << " " << this->priority<<endl;
     
 }
+int Node::getPriority(){
+    return priority;
+}

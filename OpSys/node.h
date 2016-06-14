@@ -29,6 +29,7 @@ public:
   void setRight(Node* obj);
   Node *getRight();
   Node *getLeft();
+  int getPriority();
   int getPID();
   void display();
 };

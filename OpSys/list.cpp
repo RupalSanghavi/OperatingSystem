@@ -8,6 +8,34 @@ List::List()
   tail = nullptr;
 }
 //default, add to back of queue
+void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priority1){
+    Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1); //create a node with all the data
+    if(head == nullptr){
+        head = obj;
+        tail = obj;
+    }
+    else{
+        Node * temp = head;
+        while(temp->getPriority() > priority1)
+        {
+            //cout<<temp->getPID();
+            if(temp->getRight() == nullptr){ //if node needs to be added at end
+                temp->setRight(obj);
+                obj->setLeft(temp);
+                break;
+            }
+            
+            temp = temp->getRight();
+            if(temp == nullptr)
+                break;
+            
+        }
+        //cout<<temp->getPID();
+        /*temp->setLeft(tail);
+        tail->setRight(obj);
+        tail = obj;*/
+    }
+}
 void List::addPCB(int pos, int data) //change to data?
 {/*
   Node * obj = new Node(data); //create a node with all the data
@@ -19,7 +47,7 @@ void List::addPCB(int pos, int data) //change to data?
   temp->getLeft()->setRight(obj); //attach node to right of previous node*/
 
 }
-//if position given
+//default
 void List::addPCB(int PID1, int arrivalTime1, int burstTime1, int priority1){
   //error checks
   Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1); //create a node with all the data
