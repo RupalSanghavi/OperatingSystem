@@ -8,7 +8,8 @@
 using namespace std;
 
 void processMgmt(List*& ready1, List*& waiting1);
-void firstComeFirstServe(string file, ifstream &fin, List*& ready2);
+void firstComeFirstServe(ifstream &fin, List*& ready2);
+void readFile(ifstream &fin);
 
 int main(int argc, char *argv[])
 {
@@ -63,6 +64,7 @@ void processMgmt(List *&ready1, List *&waiting1){
               << "\t [3] Delete a PCB with a given PID \n"
               << "\t [4] Default Deletion (given a certain PID) \n"
               << "\t [5] First-Come-First-Serve Scheduling \n"
+              << "\t [6] Non-Preemptive Priority Scheduling \n"
               << "\t [0] exit\n" <<  endl;
          cout << "Select: "<< endl;
          cin >> choice;
@@ -106,26 +108,13 @@ void processMgmt(List *&ready1, List *&waiting1){
                break;
              }
            case 5: {
-               cout<<"Please enter name of text file: ";
-               string file;
-               //add check to see if actually able to open text file
-               cin>>file;
                ifstream fin;
-               fin.open(file);
-               bool open = false;
-               while(open!=true){
-                   if(fin.is_open()){
-                       cout<<"File opened successfully. "<<endl;
-                       open = true;
-                   }
-                   else{
-                       cout<<"Error opening file. Please retry: ";
-                       cin>> file;
-                       fin.open(file);
-                   }
-               }
-               firstComeFirstServe(file, fin, ready1);
+               readFile(fin);
+               firstComeFirstServe(fin, ready1);
 
+             }
+             case 6: {
+                 
              }
            case 0:{
                correct = true;
@@ -159,8 +148,10 @@ void processMgmt(List *&ready1, List *&waiting1){
      }
 
 }
-void firstComeFirstServe(string file, ifstream &fin, List*& ready2){
+void firstComeFirstServe(ifstream &fin, List*& ready2){
     string line = "";
+    int waitTime = 0;
+    int finBurst = 0;
     vector<int> data;
     while(!fin.eof()){
         getline(fin,line,'\n');
@@ -175,10 +166,33 @@ void firstComeFirstServe(string file, ifstream &fin, List*& ready2){
                 ss.ignore();
         }
         ready2->addPCB(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
+        waitTime += data[2]; //add burst time
+        finBurst = data[2]; //keep track of last burst time
         //for (int i=0; i< data.size(); i++)
             //std::cout << data.at(i)<<std::endl;
         line = "";
         data.clear();
     }
+    waitTime -= finBurst; //subtract last burst time to calculate waitTime
+    cout<<"Average Waiting Time: "<<waitTime<<endl;
+    
 }
-//void read file
+void readFile(ifstream &fin){
+    cout<<"Please enter name of text file: ";
+    string file;
+    //add check to see if actually able to open text file
+    cin>>file;
+    fin.open(file);
+    bool open = false;
+    while(open!=true){
+        if(fin.is_open()){
+            cout<<"File opened successfully. "<<endl;
+            open = true;
+            }
+            else{
+                cout<<"Error opening file. Please retry: ";
+                cin>> file;
+                fin.open(file);
+            }
+        }
+}
