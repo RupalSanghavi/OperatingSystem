@@ -205,8 +205,8 @@ void npPriority(ifstream &fin, List*& ready2){
         line = "";
         data.clear();
     }
-    waitTime -= finBurst; //subtract last burst time to calculate waitTime
-    cout<<"Average Waiting Time: "<<waitTime<<endl;
+    //waitTime -= finBurst; //subtract last burst time to calculate waitTime
+    cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl;
     
 }
 void readFile(ifstream &fin){

@@ -31,6 +31,7 @@ public:
   Node *getLeft();
   int getPriority();
   int getPID();
+  int getBurstTime();
   void display();
 };
 

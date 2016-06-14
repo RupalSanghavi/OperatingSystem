@@ -44,3 +44,6 @@ void Node::display(){
 int Node::getPriority(){
     return priority;
 }
+int Node::getBurstTime(){
+    return burstTime;
+}

@@ -124,3 +124,18 @@ void List::printVals()
       temp = temp->getRight();
     }
 }
+int List::calcAvgWaitTime(){
+    int waitTime = 0;
+    int finalBurst = 0;
+    Node * temp = head;
+    //iterate to end of list
+    while(temp != nullptr){
+        finalBurst = temp->getBurstTime();
+        waitTime += finalBurst;
+        //temp->display();
+        temp = temp->getRight();
+    }
+    waitTime -= finalBurst;
+    return waitTime;
+    
+}
