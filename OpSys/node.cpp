@@ -15,7 +15,7 @@ Node::Node(int PID1, int arrivalTime1, int burstTime1, int priority1){
   this->PID = PID1;
   this->arrivalTime = arrivalTime1;
   this->burstTime = burstTime1;
-  this->priority = burstTime1;
+  this->priority = priority1;
   this->left = nullptr; //initialize
   this->right = nullptr;
 }

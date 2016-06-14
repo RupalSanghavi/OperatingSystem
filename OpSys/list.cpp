@@ -16,19 +16,32 @@ void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priori
     }
     else{
         Node * temp = head;
-        while(temp->getPriority() > priority1)
+        while(temp->getPriority() < priority1)
         {
             //cout<<temp->getPID();
             if(temp->getRight() == nullptr){ //if node needs to be added at end
                 temp->setRight(obj);
                 obj->setLeft(temp);
-                break;
+                return;
             }
             
             temp = temp->getRight();
-            if(temp == nullptr)
+            if(temp == nullptr) //NEED TO FIX
                 break;
             
+        }
+        //to place at beginning
+        if(temp== head){
+            obj->setRight(head);
+            head->setLeft(obj);
+            head = obj;
+        }
+        else{
+            //put node before the current one temp is pointing to
+            obj->setLeft(temp->getLeft());
+            obj->setRight(temp);
+            temp->getLeft()->setRight(obj);
+            temp->setLeft(obj);
         }
         //cout<<temp->getPID();
         /*temp->setLeft(tail);
