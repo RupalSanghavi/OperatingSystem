@@ -124,18 +124,25 @@ void List::printVals()
       temp = temp->getRight();
     }
 }
-int List::calcAvgWaitTime(){
-    int waitTime = 0;
+double List::calcAvgWaitTime(){
+    double waitTime = 0.0;
     int finalBurst = 0;
+    int tot = 0;
+    int nodes = 0;
     Node * temp = head;
     //iterate to end of list
     while(temp != nullptr){
+        nodes++;
         finalBurst = temp->getBurstTime();
-        waitTime += finalBurst;
+        tot = waitTime + finalBurst;
+        waitTime += tot;
         //temp->display();
         temp = temp->getRight();
     }
-    waitTime -= finalBurst;
+    
+    waitTime -= tot; //for last process
+    waitTime /= double(nodes);
+    //waitTime -= finalBurst;
     return waitTime;
     
 }

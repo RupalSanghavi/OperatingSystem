@@ -112,12 +112,14 @@ void processMgmt(List *&ready1, List *&waiting1){
                ifstream fin;
                readFile(fin);
                firstComeFirstServe(fin, ready1);
+               break;
 
              }
              case 6: {
                  ifstream fin;
                  readFile(fin);
                  npPriority(fin, ready1);
+                 break;
              }
            case 0:{
                correct = true;
@@ -177,7 +179,7 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
         data.clear();
     }
     waitTime -= finBurst; //subtract last burst time to calculate waitTime
-    cout<<"Average Waiting Time: "<<waitTime<<endl;
+    cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
     
 }
 void npPriority(ifstream &fin, List*& ready2){
@@ -206,7 +208,7 @@ void npPriority(ifstream &fin, List*& ready2){
         data.clear();
     }
     //waitTime -= finBurst; //subtract last burst time to calculate waitTime
-    cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl;
+    cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
     
 }
 void readFile(ifstream &fin){
