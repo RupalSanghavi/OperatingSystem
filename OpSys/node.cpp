@@ -8,6 +8,8 @@ Node::Node()
   arrivalTime = 0;
   burstTime = 0;
   priority = 0;
+  remainBurstTime = 0;
+  cumulativeTime = 0;
   left = nullptr;
   right = nullptr;
 }
@@ -46,4 +48,18 @@ int Node::getPriority(){
 }
 int Node::getBurstTime(){
     return burstTime;
+}
+void Node::setRemainBurstTime(int remainBurstTime1){
+     this->remainBurstTime = remainBurstTime1;
+}
+
+void Node::setCumulativeTime(int cumulativeTime1){
+     this->cumulativeTime = cumulativeTime1;
+}
+
+int Node::getCumulativeTime(){
+    return this->cumulativeTime;
+}
+int Node::getRemainBurstTime(){
+    return this->burstTime;
 }

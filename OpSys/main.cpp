@@ -11,6 +11,7 @@ void processMgmt(List*& ready1, List*& waiting1);
 void firstComeFirstServe(ifstream &fin, List*& ready2);
 void npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
+void roundRobin(ifstream &fin, List*& ready2);
 
 int main(int argc, char *argv[])
 {
@@ -155,8 +156,6 @@ void processMgmt(List *&ready1, List *&waiting1){
 }
 void firstComeFirstServe(ifstream &fin, List*& ready2){
     string line = "";
-    int waitTime = 0;
-    int finBurst = 0;
     vector<int> data;
     while(!fin.eof()){
         getline(fin,line,'\n');
@@ -170,22 +169,17 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
             if(ss.peek() == ',')
                 ss.ignore();
         }
-        ready2->addPCB(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
-        waitTime += data[2]; //add burst time
-        finBurst = data[2]; //keep track of last burst time
+        ready2->addPCB(data[0],data[1],data[2],data[3]); //default tail insertion due to FCFS
         //for (int i=0; i< data.size(); i++)
             //std::cout << data.at(i)<<std::endl;
         line = "";
         data.clear();
     }
-    waitTime -= finBurst; //subtract last burst time to calculate waitTime
     cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
     
 }
 void npPriority(ifstream &fin, List*& ready2){
     string line = "";
-    int waitTime = 0;
-    int finBurst = 0;
     vector<int> data;
     while(!fin.eof()){
         getline(fin,line,'\n');
@@ -200,8 +194,6 @@ void npPriority(ifstream &fin, List*& ready2){
                 ss.ignore();
         }
         ready2->priorityInsert(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
-        //waitTime += data[2]; //add burst time
-        //finBurst = data[2]; //keep track of last burst time
         //for (int i=0; i< data.size(); i++)
         //std::cout << data.at(i)<<std::endl;
         line = "";
@@ -210,6 +202,31 @@ void npPriority(ifstream &fin, List*& ready2){
     //waitTime -= finBurst; //subtract last burst time to calculate waitTime
     cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
     
+}
+void roundRobin(ifstream &fin, List*& ready2){
+    string line = "";
+    vector<int> data;
+    while(!fin.eof()){
+        getline(fin,line,'\n');
+        if(line == "")//if eof didn't work
+            break;
+        //fin>>line;
+        stringstream ss(line);
+        int x;
+        while(ss>>x){
+            data.push_back(x);
+            if(ss.peek() == ',')
+                ss.ignore();
+        }
+        ready2->addPCB(data[0],data[1],data[2],data[3]); //do this for first round
+        //for (int i=0; i< data.size(); i++)
+        //std::cout << data.at(i)<<std::endl;
+        line = "";
+        data.clear();
+    }
+    //RR call
+    cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
+
 }
 void readFile(ifstream &fin){
     cout<<"Please enter name of text file: ";

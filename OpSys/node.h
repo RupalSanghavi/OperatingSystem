@@ -21,12 +21,18 @@ private:
   int arrivalTime;
   int burstTime;
   int priority;
+  int remainBurstTime;
+  int cumulativeTime;
     
 public:
   Node();
   Node(int PID1, int arrivalTime1, int burstTime1, int priority1);
   void setLeft(Node * obj);
   void setRight(Node* obj);
+  void setRemainBurstTime(int remainBurstTime1);
+  void setCumulativeTime(int cumulativeTime1);
+  int getCumulativeTime();
+  int getRemainBurstTime();
   Node *getRight();
   Node *getLeft();
   int getPriority();
