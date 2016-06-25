@@ -38,6 +38,7 @@ public:
   int getPriority();
   int getPID();
   int getBurstTime();
+  int getArrivalTime();
   void display();
 };
 

@@ -141,16 +141,20 @@ void List::printVals()
 }
 double List::calcAvgWaitTime(){
     double waitTime = 0.0;
+    int totalTime = 0; //for purposes of calculating incremental wait time
     int finalBurst = 0;
     int tot = 0;
     int nodes = 0;
     Node * temp = head;
+    //waitTime += temp->getArrivalTime(); //offset subtracting it later since first arrival time doesn't matter
     //iterate to end of list
     while(temp != nullptr){
         nodes++;
         finalBurst = temp->getBurstTime();
-        tot = waitTime + finalBurst;
+        tot = totalTime + finalBurst ;
+        totalTime += tot;
         waitTime += tot;
+        waitTime -= temp->getArrivalTime();
         //temp->display();
         temp = temp->getRight();
     }
@@ -161,3 +165,61 @@ double List::calcAvgWaitTime(){
     return waitTime;
     
 }
+int List::getQueueTotalTime(){
+    return queueTotalTime;
+}
+void List::insertRoundRobin(int Q){
+    //iterate through initial list, while temp != nullptr
+    Node * temp = head;
+    while(temp!= nullptr){
+        cout<<"O";
+        //if process unfinished
+//        if(Q < temp->getRemainBurstTime()){
+//            Node * obj = new Node(temp->getPID(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
+//            obj->setRemainBurstTime(temp->getRemainBurstTime() - Q);
+//            obj->setCumulativeTime(queueTotalTime + Q);
+//            queueTotalTime += Q;
+//            obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
+//            //insert node at end
+//            obj->setLeft(tail);
+//            tail->setRight(obj);
+//            tail = obj;
+//        }
+//        else{
+//            temp->setCumulativeTime(temp->getCumulativeTime() + temp->getBurstTime());
+//            queueTotalTime += temp->getRemainBurstTime();
+//            obj->setRemainBurstTime(0);
+//        }
+        if(temp->getRemainBurstTime() > 0){
+            Node * obj = new Node(temp->getPID(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
+            obj->setRemainBurstTime(temp->getRemainBurstTime() - Q);
+            if(Q < temp->getRemainBurstTime()){
+                obj->setCumulativeTime(queueTotalTime + Q);
+                queueTotalTime += Q;
+                obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
+            }
+            else{
+                obj->setCumulativeTime(queueTotalTime + temp->getRemainBurstTime());
+                queueTotalTime += temp->getRemainBurstTime();
+                obj->setRemainBurstTime(0);
+            }
+            //tail->setRight(obj);
+            //obj->setLeft(tail);
+            obj->setLeft(tail);
+            tail->setRight(obj);
+            tail = obj;
+            //tail =
+        }
+        //do nothing
+        else{}
+        temp = temp->getRight();
+         
+
+        
+    }
+    //if temp->getRemainBurstTime() > 0
+        //create new node and append to tail
+    
+    
+}
+//roundRobinAvgWaitTime
