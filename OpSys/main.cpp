@@ -7,7 +7,8 @@
 #include "node.h"
 using namespace std;
 
-void processMgmt(List*& ready1, List*& waiting1);
+//void processMgmt(List*& ready1, List*& waiting1);
+void processMgmt(List*& waiting1);
 void firstComeFirstServe(ifstream &fin, List*& ready2);
 void npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
     cout << "Hello World!" << endl;
     bool correct = false;
     string choice ="";
-    List * ready = new List();
+    //List * ready = new List();
     List * waiting = new List();
     cout << "============================== \n";
     cout << "SIMULATED OPERATING SYSTEM \n";
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
         
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         if(choice == "1")
-            processMgmt(ready, waiting);
+            processMgmt(waiting);
         else if(choice == "2"){}
         //
         else if(choice == "0")
@@ -46,12 +47,12 @@ int main(int argc, char *argv[])
         else
             cout << "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
     }
-    ready->printVals();
+    //ready->printVals();
     cout<<endl;
-    cout<<ready->getQueueTotalTime();
+    //cout<<ready->getQueueTotalTime();
     return 0;
 }
-void processMgmt(List *&ready1, List *&waiting1){
+void processMgmt(List *&waiting1){
     bool correct = false;
     int choice;
     cout << "============================== \n";
@@ -78,13 +79,13 @@ void processMgmt(List *&ready1, List *&waiting1){
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         switch(choice){
             case 1: {
-                cout<< "Enter Position: ";
+                /*cout<< "Enter Position: ";
                 int pos;
                 cin>> pos;
                 cout<<"Enter data"<<endl;
                 int randData;
                 cin>> randData;
-                ready1->addPCB(pos,randData);
+                ready1->addPCB(pos,randData);*/
                 break;
             }
             case 2: {
@@ -95,40 +96,44 @@ void processMgmt(List *&ready1, List *&waiting1){
                 break;
             }
             case 3: {
-                cout<<"What is the PID of the PCB you wish to delete?";
+                /*cout<<"What is the PID of the PCB you wish to delete?";
                 int PID;
                 cin>>PID;
                 int delPID = ready1->deletePCB(PID);
                 if(delPID != 0)
                     cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
-                else{}
+                else{}*/
                 break;
             }
             case 4: {
-                cout<< "Deleting PCB at beginning of queue "<<endl;
+                /*cout<< "Deleting PCB at beginning of queue "<<endl;
                 int PID = ready1->deletePCB();
                 if(PID != 0)
                     cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
-                else{}
+                else{}*/
                 break;
             }
             case 5: {
                 ifstream fin;
                 readFile(fin);
-                firstComeFirstServe(fin, ready1);
+                List * ready = new List();
+                firstComeFirstServe(fin, ready);
                 break;
                 
             }
             case 6: {
                 ifstream fin;
                 readFile(fin);
-                npPriority(fin, ready1);
+                List * ready = new List();
+                npPriority(fin, ready);
                 break;
             }
             case 7: {
                 ifstream fin;
                 readFile(fin);
-                roundRobin(fin,ready1);
+                List * ready = new List();
+                roundRobin(fin,ready);
+                break;
             }
             case 0:{
                 correct = true;

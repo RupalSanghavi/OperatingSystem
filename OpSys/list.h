@@ -1,6 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
-#include "node.h";
+#include "node.h"
 
 class List
 {
