@@ -150,11 +150,13 @@ double List::calcAvgWaitTime(){
     //iterate to end of list
     while(temp != nullptr){
         nodes++;
-        finalBurst = temp->getBurstTime();
+        tot += temp->getBurstTime();
+        waitTime += tot;
+        /*finalBurst = temp->getBurstTime();
         tot = totalTime + finalBurst ;
         totalTime += tot;
         waitTime += tot;
-        waitTime -= temp->getArrivalTime();
+        waitTime -= temp->getArrivalTime();*/
         //temp->display();
         temp = temp->getRight();
     }
@@ -225,13 +227,15 @@ void List::insertRoundRobin(int Q){
 List::~List(){
     if(head!= nullptr)
     {
+        int x = 0;
         Node * temp = head;
         while(temp != nullptr)
         {
-            cout<<"A"<<endl;
+            x++;
             delete temp;
             temp = temp->getRight();
         }
+        cout<<x;
     }
 }
 //roundRobinAvgWaitTime
