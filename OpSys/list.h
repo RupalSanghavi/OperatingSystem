@@ -19,6 +19,7 @@ public:
     void printVals();
     int getQueueTotalTime();
     void insertRoundRobin(int Q);
+    ~List();
 };
 
 #endif // LIST_H

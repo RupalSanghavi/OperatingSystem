@@ -118,6 +118,7 @@ void processMgmt(List *&waiting1){
                 readFile(fin);
                 List * ready = new List();
                 firstComeFirstServe(fin, ready);
+                delete ready;
                 break;
                 
             }
@@ -151,6 +152,7 @@ void processMgmt(List *&waiting1){
          ready1->addPCB(pos);
          }
          else if()
+         
          
          else if(choice == "2"){
          cout<< "Deleting PCB at beginning of queue "<<endl;

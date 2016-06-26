@@ -222,4 +222,16 @@ void List::insertRoundRobin(int Q){
     
     
 }
+List::~List(){
+    if(head!= nullptr)
+    {
+        Node * temp = head;
+        while(temp != nullptr)
+        {
+            cout<<"A"<<endl;
+            delete temp;
+            temp = temp->getRight();
+        }
+    }
+}
 //roundRobinAvgWaitTime
