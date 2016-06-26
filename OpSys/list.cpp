@@ -152,6 +152,7 @@ double List::calcAvgWaitTime(){
         nodes++;
         tot += temp->getBurstTime();
         waitTime += tot;
+        waitTime -= temp->getArrivalTime();
         /*finalBurst = temp->getBurstTime();
         tot = totalTime + finalBurst ;
         totalTime += tot;
