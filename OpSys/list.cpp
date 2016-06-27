@@ -1,6 +1,8 @@
 #include "list.h"
 #include "node.h"
 #include <iostream>
+#include <unordered_map>
+#include <vector>
 using namespace std;
 List::List()
 {
@@ -168,8 +170,28 @@ double List::calcAvgWaitTime(){
     return waitTime;
     
 }
-double List::calcRRWaitTime(){
-    
+double List::calcRRWaitTime(int Q){
+    Node * temp = head;
+    unordered_map<int, vector<int>> nodes;// = unordered_map<int,vector<int,int>>();
+    int prev = 0;
+    while(temp!= nullptr){
+        if(nodes.find(temp->getPID()) == nodes.end()) //not in map yet
+        {
+            int tmp = prev;
+            prev = temp->getCumulativeTime();
+            nodes[temp->getPID()].push_back(prev);
+            //nodes[temp->getPID()].push_back(0);
+            nodes[temp->getPID()].push_back(tmp);
+        }
+        else{
+            nodes[temp->getPID()][1] += (prev - nodes[temp->getPID()][0]);
+            //nodes[temp->getPID()][1] += (temp->getCumulativeTime() - (temp->getRemainBurstTime() + Q) - nodes[temp->getPID()][0]);
+            prev = temp->getCumulativeTime();
+            nodes[temp->getPID()][0] = prev;
+        }
+        temp = temp->getRight();
+    }
+    cout<<"blah";
     return 5.5;
 }
 int List::getQueueTotalTime(){
