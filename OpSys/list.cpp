@@ -65,7 +65,7 @@ void List::addPCB(int pos, int data) //change to data?
 void List::addPCB(int PID1, int arrivalTime1, int burstTime1, int priority1, int Q){
   //error checks
   Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1); //create a node with all the data
-  obj->setRemainBurstTime(burstTime1 - Q); //for purposes of Round Robin avg. waiting time calc
+  //obj->setRemainBurstTime(burstTime1 - Q); //for purposes of Round Robin avg. waiting time calc
     //if process needs to requeued
     if(Q < burstTime1){
         queueTotalTime += Q;

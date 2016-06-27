@@ -127,7 +127,7 @@ void processMgmt(List *&waiting1){
                 readFile(fin);
                 List * ready = new List();
                 npPriority(fin, ready);
-                ready->printVals();
+                //ready->printVals();
                 delete ready;
                 break;
             }
@@ -136,6 +136,7 @@ void processMgmt(List *&waiting1){
                 readFile(fin);
                 List * ready = new List();
                 roundRobin(fin,ready);
+                ready->printVals();
                 delete ready;
                 break;
             }
