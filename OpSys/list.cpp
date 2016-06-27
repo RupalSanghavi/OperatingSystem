@@ -197,8 +197,9 @@ void List::insertRoundRobin(int Q){
             //obj->setRemainBurstTime(temp->getRemainBurstTime() - Q);
             //if(Q < temp->getRemainBurstTime()){
             if((temp->getRemainBurstTime() + Q) > Q){
-                obj->setCumulativeTime(queueTotalTime + Q);
+                //obj->setCumulativeTime(queueTotalTime + Q);
                 queueTotalTime += Q;
+                temp->setCumulativeTime(queueTotalTime);
                 obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
             }
 
@@ -208,8 +209,9 @@ void List::insertRoundRobin(int Q){
 //                obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
 //            }
             else{
-                obj->setCumulativeTime(queueTotalTime + temp->getRemainBurstTime());
+                //obj->setCumulativeTime(queueTotalTime + temp->getRemainBurstTime());
                 queueTotalTime += (temp->getRemainBurstTime() + Q);
+                temp->setCumulativeTime(queueTotalTime);
                 obj->setRemainBurstTime(temp->getRemainBurstTime()-Q); //******
             }
             //tail->setRight(obj);
@@ -223,9 +225,11 @@ void List::insertRoundRobin(int Q){
         else{
             if((temp->getRemainBurstTime() + Q) > Q){
                 queueTotalTime += Q;
+                temp->setCumulativeTime(queueTotalTime);
             }
             else{
                 queueTotalTime += (temp->getRemainBurstTime() + Q);
+                temp->setCumulativeTime(queueTotalTime);
             }
             //queueTotalTime += temp->getBurstTime();
         }
