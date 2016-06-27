@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <list>
 using namespace std;
 List::List()
 {
@@ -173,10 +174,12 @@ double List::calcAvgWaitTime(){
 double List::calcRRWaitTime(int Q){
     Node * temp = head;
     unordered_map<int, vector<int>> nodes;// = unordered_map<int,vector<int,int>>();
+    vector<int> pids;
     int prev = 0;
     while(temp!= nullptr){
         if(nodes.find(temp->getPID()) == nodes.end()) //not in map yet
         {
+            pids.push_back(temp->getPID());
             int tmp = prev;
             prev = temp->getCumulativeTime();
             nodes[temp->getPID()].push_back(prev);
@@ -191,8 +194,13 @@ double List::calcRRWaitTime(int Q){
         }
         temp = temp->getRight();
     }
+    double total = 0.0;
+    for(int i = 0; i<pids.size();i++){
+        total += nodes[pids[i]][1]; //add individual process' total waiting time
+    }
+    total /= double(pids.size());
     cout<<"blah";
-    return 5.5;
+    return total;
 }
 int List::getQueueTotalTime(){
     return queueTotalTime;
