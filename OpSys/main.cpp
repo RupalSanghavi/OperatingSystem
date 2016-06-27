@@ -237,13 +237,15 @@ void roundRobin(ifstream &fin, List*& ready2){
             if(ss.peek() == ',')
                 ss.ignore();
         }
-        ready2->addPCB(data[0],data[1],data[2],data[3],10); //do this for first round
+        ready2->addPCB(data[0],data[1],data[2],data[3],20); //do this for first round
         //for (int i=0; i< data.size(); i++)
         //std::cout << data.at(i)<<std::endl;
         line = "";
         data.clear();
     }
-    ready2->insertRoundRobin(10); //NEED TO UNHARDCODE ***
+    ready2->insertRoundRobin(20); //NEED TO UNHARDCODE ***
+    cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
+
 
    // cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
     
