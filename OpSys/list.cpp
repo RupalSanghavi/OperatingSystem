@@ -176,7 +176,9 @@ double List::calcRRWaitTime(int Q){
     unordered_map<int, vector<int>> nodes;// = unordered_map<int,vector<int,int>>();
     vector<int> pids;
     int prev = 0;
+    int totArrTime = 0;
     while(temp!= nullptr){
+        totArrTime += temp->getArrivalTime();
         if(nodes.find(temp->getPID()) == nodes.end()) //not in map yet
         {
             pids.push_back(temp->getPID());
@@ -198,8 +200,8 @@ double List::calcRRWaitTime(int Q){
     for(int i = 0; i<pids.size();i++){
         total += nodes[pids[i]][1]; //add individual process' total waiting time
     }
+    total -= totArrTime;
     total /= double(pids.size());
-    cout<<"blah";
     return total;
 }
 int List::getQueueTotalTime(){
@@ -209,7 +211,6 @@ void List::insertRoundRobin(int Q){
     //iterate through initial list, while temp != nullptr
     Node * temp = head;
     while(temp!= nullptr){
-        cout<<"O";
         /*if(Q < burstTime1){
             queueTotalTime += Q;
             obj->setCumulativeTime(obj->getCumulativeTime()+Q);
@@ -276,7 +277,6 @@ void List::insertRoundRobin(int Q){
 void List::calcTotalTime(int Q){
     Node * temp = head;
     while(temp!= nullptr){
-        cout<<"O";
         if(temp->getRemainBurstTime() > 0){
           
             if(Q < temp->getRemainBurstTime()){
@@ -313,7 +313,6 @@ List::~List(){
             delete temp;
             temp = temp->getRight();
         }
-        cout<<x;
     }
 }
 //roundRobinAvgWaitTime

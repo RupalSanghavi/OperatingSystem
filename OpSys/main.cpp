@@ -244,8 +244,8 @@ void roundRobin(ifstream &fin, List*& ready2){
         data.clear();
     }
     ready2->insertRoundRobin(20); //NEED TO UNHARDCODE ***
-    ready2->calcRRWaitTime(20);
-    //cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
+    
+    cout<<"Average Waiting Time: "<< ready2->calcRRWaitTime(20) <<endl<<endl;
 
     
    // cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
