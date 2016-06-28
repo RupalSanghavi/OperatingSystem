@@ -118,6 +118,8 @@ void processMgmt(List *&waiting1){
                 readFile(fin);
                 List * ready = new List();
                 firstComeFirstServe(fin, ready);
+                ready->printVals();
+                cout<<endl<<endl;
                 delete ready;
                 break;
                 
@@ -127,7 +129,8 @@ void processMgmt(List *&waiting1){
                 readFile(fin);
                 List * ready = new List();
                 npPriority(fin, ready);
-                //ready->printVals();
+                ready->printVals();
+                cout<<endl<<endl;
                 delete ready;
                 break;
             }
@@ -137,6 +140,7 @@ void processMgmt(List *&waiting1){
                 List * ready = new List();
                 roundRobin(fin,ready);
                 ready->printVals();
+                cout<<endl<<endl;
                 delete ready;
                 break;
             }
@@ -258,7 +262,7 @@ void readFile(ifstream &fin){
     bool open = false;
     while(open!=true){
         if(fin.is_open()){
-            cout<<"File opened successfully. "<<endl;
+            cout<<"File opened successfully. "<<endl<<endl;
             open = true;
         }
         else{

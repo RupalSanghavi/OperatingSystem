@@ -173,7 +173,7 @@ double List::calcAvgWaitTime(){
 }
 double List::calcRRWaitTime(int Q){
     Node * temp = head;
-    unordered_map<int, vector<int>> nodes;// = unordered_map<int,vector<int,int>>();
+    unordered_map<int, vector<int> > nodes;// = unordered_map<int,vector<int,int>>();
     vector<int> pids;
     int prev = 0;
     int totArrTime = 0;

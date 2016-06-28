@@ -46,7 +46,11 @@ int Node::getPID(){
     return PID;
 }
 void Node::display(){
-    cout<<this->PID << " "<< this->arrivalTime<<" Burst Time: "<<this->burstTime << " Priority: " << this->priority<< " Remaining Burst Time: "<<this->remainBurstTime<< " Cumulative Time: "<<this->cumulativeTime<<endl;
+    cout<<"PID: "<<this->PID << " Arrival Time: "<< this->arrivalTime<<" Burst Time: "<<this->burstTime << " Priority: " << this->priority;
+    if(this->cumulativeTime != 0)
+        cout<< " Cumulative Time: "<<this->cumulativeTime<<endl;
+    else
+        cout<<endl;
     
 }
 int Node::getPriority(){
