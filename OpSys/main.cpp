@@ -7,7 +7,6 @@
 #include "node.h"
 using namespace std;
 
-//void processMgmt(List*& ready1, List*& waiting1);
 void processMgmt(List*& waiting1);
 void firstComeFirstServe(ifstream &fin, List*& ready2);
 void npPriority(ifstream &fin, List*& ready2);
@@ -20,7 +19,6 @@ int main(int argc, char *argv[])
 {
     bool correct = false;
     string choice ="";
-    //List * ready = new List();
     List * waiting = new List();
     cout << "============================== \n";
     cout << "SIMULATED OPERATING SYSTEM \n";
@@ -48,9 +46,7 @@ int main(int argc, char *argv[])
         else
             cout << "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
     }
-    //ready->printVals();
     cout<<endl;
-    //cout<<ready->getQueueTotalTime();
     return 0;
 }
 void processMgmt(List *&waiting1){
@@ -162,7 +158,6 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
         getline(fin,line,'\n');
         if(line == "")//if eof didn't work
             break;
-        //fin>>line;
         stringstream ss(line);
         int x;
         while(ss>>x){
@@ -171,8 +166,7 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
                 ss.ignore();
         }
         ready2->addPCB(data[0],data[1],data[2],data[3]); //default tail insertion due to FCFS
-        //for (int i=0; i< data.size(); i++)
-        //std::cout << data.at(i)<<std::endl;
+
         line = "";
         data.clear();
     }
@@ -186,7 +180,6 @@ void npPriority(ifstream &fin, List*& ready2){
         getline(fin,line,'\n');
         if(line == "")//if eof didn't work
             break;
-        //fin>>line;
         stringstream ss(line);
         int x;
         while(ss>>x){
@@ -195,12 +188,10 @@ void npPriority(ifstream &fin, List*& ready2){
                 ss.ignore();
         }
         ready2->priorityInsert(data[0],data[1],data[2],data[3]); //create a PCB with the data and add to tail of queue
-        //for (int i=0; i< data.size(); i++)
-        //std::cout << data.at(i)<<std::endl;
+
         line = "";
         data.clear();
     }
-    //waitTime -= finBurst; //subtract last burst time to calculate waitTime
     cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
     
 }
@@ -227,8 +218,6 @@ void roundRobin(ifstream &fin, List*& ready2){
     
     cout<<"Average Waiting Time: "<< ready2->calcRRWaitTime(data[4]) <<endl<<endl;
 
-    
-   // cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
     
 }
 void readFile(ifstream &fin){
@@ -285,7 +274,6 @@ void userInput(List*& ready, int option){
         cin.clear();
         cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             cin>>inpChoice;
-            //cout<<endl;
             if(inpChoice == "1"){
                 propInput = true;
             }

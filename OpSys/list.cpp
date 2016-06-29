@@ -47,28 +47,14 @@ void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priori
             temp->getLeft()->setRight(obj);
             temp->setLeft(obj);
         }
-        //cout<<temp->getPID();
-        /*temp->setLeft(tail);
-        tail->setRight(obj);
-        tail = obj;*/
-    }
-}
-void List::addPCB(int pos, int data) //change to data?
-{/*
-  Node * obj = new Node(data); //create a node with all the data
-  Node * temp = head;
-  for(int i = 0; i < pos; i++){ //PROB NEED TO CHANGE 0
-      temp = temp->getRight();
-    }
-  temp->setLeft(obj); //insert node to left of current node
-  temp->getLeft()->setRight(obj); //attach node to right of previous node*/
 
+    }
 }
+
 //default
 void List::addPCB(int PID1, int arrivalTime1, int burstTime1, int priority1, int Q){
   //error checks
   Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1); //create a node with all the data
-  //obj->setRemainBurstTime(burstTime1 - Q); //for purposes of Round Robin avg. waiting time calc
     //if process needs to requeued
     if(Q < burstTime1){
         //queueTotalTime += Q;
@@ -124,8 +110,6 @@ int List::deletePCB(){
   else{
       Node * temp = head->getRight();
       int PID1 = head->getPID();
-     // head->setRight(nullptr); //avoid dangling pointer
-      //int PID = head.PID?
       delete head;
       head = temp; //set head to next node
       return PID1;
@@ -149,25 +133,18 @@ double List::calcAvgWaitTime(){
     int tot = 0;
     int nodes = 0;
     Node * temp = head;
-    //waitTime += temp->getArrivalTime(); //offset subtracting it later since first arrival time doesn't matter
+
     //iterate to end of list
     while(temp != nullptr){
         nodes++;
         tot += temp->getBurstTime();
         waitTime += tot;
         waitTime -= temp->getArrivalTime();
-        /*finalBurst = temp->getBurstTime();
-        tot = totalTime + finalBurst ;
-        totalTime += tot;
-        waitTime += tot;
-        waitTime -= temp->getArrivalTime();*/
-        //temp->display();
         temp = temp->getRight();
     }
     
     waitTime -= tot; //for last process
     waitTime /= double(nodes);
-    //waitTime -= finalBurst;
     return waitTime;
     
 }
@@ -185,12 +162,10 @@ double List::calcRRWaitTime(int Q){
             int tmp = prev;
             prev = temp->getCumulativeTime();
             nodes[temp->getPID()].push_back(prev);
-            //nodes[temp->getPID()].push_back(0);
             nodes[temp->getPID()].push_back(tmp);
         }
         else{
             nodes[temp->getPID()][1] += (prev - nodes[temp->getPID()][0]);
-            //nodes[temp->getPID()][1] += (temp->getCumulativeTime() - (temp->getRemainBurstTime() + Q) - nodes[temp->getPID()][0]);
             prev = temp->getCumulativeTime();
             nodes[temp->getPID()][0] = prev;
         }
@@ -211,46 +186,25 @@ void List::insertRoundRobin(int Q){
     //iterate through initial list, while temp != nullptr
     Node * temp = head;
     while(temp!= nullptr){
-        /*if(Q < burstTime1){
-            queueTotalTime += Q;
-            obj->setCumulativeTime(obj->getCumulativeTime()+Q);
-            obj->setRemainBurstTime(obj->getRemainBurstTime()-Q);
-        }
-        //process finished
-        else{
-            queueTotalTime += burstTime1;
-            obj->setCumulativeTime(obj->getCumulativeTime()+burstTime1);
-            obj->setRemainBurstTime(0);
-        }*/
-        //temp->setRemainBurstTime(temp->getRemainBurstTime() - Q);
         if(temp->getRemainBurstTime() > 0){
             Node * obj = new Node(temp->getPID(), temp->getArrivalTime(), temp->getBurstTime(), temp->getPriority());
-            //obj->setRemainBurstTime(temp->getRemainBurstTime() - Q);
-            //if(Q < temp->getRemainBurstTime()){
+
             if((temp->getRemainBurstTime() + Q) > Q){
-                //obj->setCumulativeTime(queueTotalTime + Q);
                 queueTotalTime += Q;
                 temp->setCumulativeTime(queueTotalTime);
                 obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
             }
 
-//            if(Q < temp->getRemainBurstTime()){
-//                obj->setCumulativeTime(queueTotalTime + Q);
-//                queueTotalTime += Q;
-//                obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
-//            }
+
             else{
-                //obj->setCumulativeTime(queueTotalTime + temp->getRemainBurstTime());
                 queueTotalTime += (temp->getRemainBurstTime() + Q);
                 temp->setCumulativeTime(queueTotalTime);
                 obj->setRemainBurstTime(temp->getRemainBurstTime()-Q); //******
             }
-            //tail->setRight(obj);
-            //obj->setLeft(tail);
+
             obj->setLeft(tail);
             tail->setRight(obj);
             tail = obj;
-            //tail =
         }
         //do nothing
         else{
@@ -262,15 +216,13 @@ void List::insertRoundRobin(int Q){
                 queueTotalTime += (temp->getRemainBurstTime() + Q);
                 temp->setCumulativeTime(queueTotalTime);
             }
-            //queueTotalTime += temp->getBurstTime();
         }
         temp = temp->getRight();
          
 
         
     }
-    //if temp->getRemainBurstTime() > 0
-        //create new node and append to tail
+
     
     
 }
@@ -280,14 +232,10 @@ void List::calcTotalTime(int Q){
         if(temp->getRemainBurstTime() > 0){
           
             if(Q < temp->getRemainBurstTime()){
-                //obj->setCumulativeTime(queueTotalTime + Q);
                 queueTotalTime += Q;
-                //obj->setRemainBurstTime(temp->getRemainBurstTime()-Q);
             }
             else{
-                //obj->setCumulativeTime(queueTotalTime + temp->getRemainBurstTime());
                 queueTotalTime += temp->getRemainBurstTime();
-                //obj->setRemainBurstTime(0);
             }
  
         }
@@ -315,4 +263,3 @@ List::~List(){
         }
     }
 }
-//roundRobinAvgWaitTime
