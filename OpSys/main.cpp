@@ -123,10 +123,21 @@ void processMgmt(List *&waiting1){
                 break;
             }
             case 3: {
-                ifstream fin;
-                readFile(fin);
                 List * ready = new List();
-                roundRobin(fin,ready);
+                string input = "";
+                cout << "Choose a Input Method :\n"
+                << "\t [1] User Input \n"
+                << "\t [2] Text file \n"<<endl;
+                cin>>input;
+                if(input == "1"){
+                    userInput(ready, 3); //1 indicates Priority
+                }
+                else{
+                    ifstream fin;
+                    readFile(fin);
+                    roundRobin(fin, ready);
+                }
+                cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
                 delete ready;
@@ -141,27 +152,6 @@ void processMgmt(List *&waiting1){
                 
         }
         
-        /*if(choice == "1"){
-         cout<< "Enter Position: ";
-         int pos;
-         cin>> pos;
-         ready1->addPCB(pos);
-         }
-         else if()
-         
-         
-         else if(choice == "2"){
-         cout<< "Deleting PCB at beginning of queue "<<endl;
-         int PID = ready1->deletePCB();
-         if(PID != 0)
-         cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
-         else{}
-         }
-         //
-         else if(choice == "0")
-         correct = true;
-         else
-         cout << "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;*/
     }
     
 }
@@ -265,7 +255,7 @@ void userInput(List*& ready, int option){
     int arr = 0;
     int burst = 0;
     int prior = 0;
-    int q;
+    int q = 0;
     bool input = true;
     bool propInput = false;
     string inpChoice;
@@ -285,7 +275,7 @@ void userInput(List*& ready, int option){
             ready->addPCB(PID,arr,burst,prior);
         else if(option ==2)
             ready->priorityInsert(PID,arr,burst,prior);
-        else//RR
+        else//Round Robin
             ready->addPCB(PID,arr,burst,prior,q);
         while(propInput == false){
             //cin.clear();
@@ -312,6 +302,9 @@ void userInput(List*& ready, int option){
     }
     if(option ==1 || option ==2)
         cout<<"Average Waiting Time: "<< ready->calcAvgWaitTime() <<endl<<endl;
-    else
+    else//RR
+    {
+        ready->insertRoundRobin(q);
         cout<<"Average Waiting Time: "<< ready->calcRRWaitTime(q)<<endl<<endl;
+    }
 }
