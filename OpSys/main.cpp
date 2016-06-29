@@ -14,9 +14,9 @@ void npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
 void roundRobin(ifstream &fin, List*& ready2);
 
+
 int main(int argc, char *argv[])
 {
-    cout << "Hello World!" << endl;
     bool correct = false;
     string choice ="";
     //List * ready = new List();
@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
     {
         // main menu
         cout << "Mode choices(insert number for one of the options):\n"
-        << "\t [1] Process Management \n"
-        << "\t [2] Memory Management \n"
+        << "\t [1] Phase I: Process Management \n"
+        << "\t [2] Phase II: Memory Management \n"
         << "\t [0] exit\n" <<  endl;
         cout << "Select: "<< endl;
         cin >> choice;
@@ -79,6 +79,45 @@ void processMgmt(List *&waiting1){
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         switch(choice){
             case 1: {
+                bool input = true;
+                bool propInput = false;
+                int PID = 0;
+                int arr = 0;
+                int burst = 0;
+                int prior = 0;
+                string inpChoice;
+                while(input == true){
+                    cin.clear();
+                    cout<<"Please enter Process PID: ";
+                    cin>> PID;
+                    cout<<"Please enter Arrival Time: ";
+                    cin>> arr;
+                    cout<<"Please enter Burst Time: ";
+                    cin>> burst;
+                    cout<<"Please enter Priority: ";
+                    cin>> prior;
+                    while(propInput == false){
+                        //cin.clear();
+                        cout<<endl;
+                        cout<<"Press 1 to input another process \n"
+                        << "Press 2 to quit \n \n";
+                    cin.clear();
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        cin>>inpChoice;
+                        //cout<<endl;
+                        if(inpChoice == "1"){
+                            propInput = true;
+                        }
+                        else if(inpChoice == "2"){
+                            propInput = true;
+                            input = false;
+                        }
+                        else{
+                            cout<< "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
+                        }
+                    }
+                    propInput = false; //reset
+                }
                 /*cout<< "Enter Position: ";
                 int pos;
                 cin>> pos;
