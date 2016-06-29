@@ -8,10 +8,10 @@
 using namespace std;
 
 void processMgmt(List*& waiting1);
-void firstComeFirstServe(ifstream &fin, List*& ready2);
-void npPriority(ifstream &fin, List*& ready2);
+double firstComeFirstServe(ifstream &fin, List*& ready2);
+double npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
-void roundRobin(ifstream &fin, List*& ready2);
+double roundRobin(ifstream &fin, List*& ready2);
 void userInput(List*& ready, int option);
 
 
@@ -74,6 +74,7 @@ void processMgmt(List *&waiting1){
             case 1: {
                 List * ready = new List();
                 string input = "";
+                double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
                 << "\t [1] User Input \n"
                 << "\t [2] Text file \n"<<endl;
@@ -85,7 +86,7 @@ void processMgmt(List *&waiting1){
                 else if(input == "2"){
                     ifstream fin;
                     readFile(fin);
-                    firstComeFirstServe(fin, ready);
+                    avgWait = firstComeFirstServe(fin, ready);
                 }
                 else{
                     cout<<"Invalid input!"<<endl;
@@ -93,6 +94,7 @@ void processMgmt(List *&waiting1){
                 cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
+                cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
                 break;
                 
@@ -100,6 +102,7 @@ void processMgmt(List *&waiting1){
             case 2: {
                 List * ready = new List();
                 string input = "";
+                double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
                 << "\t [1] User Input \n"
                 << "\t [2] Text file \n"<<endl;
@@ -110,17 +113,19 @@ void processMgmt(List *&waiting1){
                 else{
                     ifstream fin;
                     readFile(fin);
-                    npPriority(fin, ready);
+                    avgWait = npPriority(fin, ready);
                 }
                 cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
+                cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
                 break;
             }
             case 3: {
                 List * ready = new List();
                 string input = "";
+                double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
                 << "\t [1] User Input \n"
                 << "\t [2] Text file \n"<<endl;
@@ -131,11 +136,12 @@ void processMgmt(List *&waiting1){
                 else{
                     ifstream fin;
                     readFile(fin);
-                    roundRobin(fin, ready);
+                    avgWait = roundRobin(fin, ready);
                 }
                 cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
+                cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
                 break;
             }
@@ -151,7 +157,7 @@ void processMgmt(List *&waiting1){
     }
     
 }
-void firstComeFirstServe(ifstream &fin, List*& ready2){
+double firstComeFirstServe(ifstream &fin, List*& ready2){
     string line = "";
     vector<int> data;
     while(!fin.eof()){
@@ -170,10 +176,13 @@ void firstComeFirstServe(ifstream &fin, List*& ready2){
         line = "";
         data.clear();
     }
-    cout<<"Average Waiting Time: "<<ready2->calcAvgWaitTime()<<endl<<endl;
+    double avgWait = ready2->calcAvgWaitTime();
+    cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+    return avgWait;
     
 }
-void npPriority(ifstream &fin, List*& ready2){
+
+double npPriority(ifstream &fin, List*& ready2){
     string line = "";
     vector<int> data;
     while(!fin.eof()){
@@ -192,10 +201,12 @@ void npPriority(ifstream &fin, List*& ready2){
         line = "";
         data.clear();
     }
-    cout<<"Average Waiting Time: "<< ready2->calcAvgWaitTime() <<endl<<endl;
+    double avgWait = ready2->calcAvgWaitTime();
+    cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+    return avgWait;
     
 }
-void roundRobin(ifstream &fin, List*& ready2){
+double roundRobin(ifstream &fin, List*& ready2){
     string line = "";
     vector<int> data;
     while(!fin.eof()){
@@ -215,8 +226,9 @@ void roundRobin(ifstream &fin, List*& ready2){
         data.clear();
     }
     ready2->insertRoundRobin(data[4]);
-    
-    cout<<"Average Waiting Time: "<< ready2->calcRRWaitTime(data[4]) <<endl<<endl;
+    double avgWait=ready2->calcRRWaitTime(data[4]);
+    cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+    return avgWait;
 
     
 }
