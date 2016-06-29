@@ -13,6 +13,7 @@ void firstComeFirstServe(ifstream &fin, List*& ready2);
 void npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
 void roundRobin(ifstream &fin, List*& ready2);
+void userInput(List*& ready, int option);
 
 
 int main(int argc, char *argv[])
@@ -63,14 +64,10 @@ void processMgmt(List *&waiting1){
     while (correct == false)
     {
         // main menu
-        cout << "Process Information Input Choices (insert number for one of the options):\n"
-        << "\t [1] Manually Add a PCB to a Given Position in the Queue \n"
-        << "\t [2] Default Addition (Add PCB to tail of queue) \n"
-        << "\t [3] Delete a PCB with a given PID \n"
-        << "\t [4] Default Deletion (given a certain PID) \n"
-        << "\t [5] First-Come-First-Serve Scheduling \n"
-        << "\t [6] Non-Preemptive Priority Scheduling \n"
-        << "\t [7] Round Robin Scheduling \n"
+        cout << "Choose a Scheduling Algorithm :\n"
+        << "\t [1] First-Come-First-Serve Scheduling \n"
+        << "\t [2] Non-Preemptive Priority Scheduling \n"
+        << "\t [3] Round Robin Scheduling \n"
         << "\t [0] exit\n" <<  endl;
         cout << "Select: "<< endl;
         cin >> choice;
@@ -79,101 +76,53 @@ void processMgmt(List *&waiting1){
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         switch(choice){
             case 1: {
-                bool input = true;
-                bool propInput = false;
-                int PID = 0;
-                int arr = 0;
-                int burst = 0;
-                int prior = 0;
-                string inpChoice;
-                while(input == true){
-                    cin.clear();
-                    cout<<"Please enter Process PID: ";
-                    cin>> PID;
-                    cout<<"Please enter Arrival Time: ";
-                    cin>> arr;
-                    cout<<"Please enter Burst Time: ";
-                    cin>> burst;
-                    cout<<"Please enter Priority: ";
-                    cin>> prior;
-                    while(propInput == false){
-                        //cin.clear();
-                        cout<<endl;
-                        cout<<"Press 1 to input another process \n"
-                        << "Press 2 to quit \n \n";
-                    cin.clear();
-                    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                        cin>>inpChoice;
-                        //cout<<endl;
-                        if(inpChoice == "1"){
-                            propInput = true;
-                        }
-                        else if(inpChoice == "2"){
-                            propInput = true;
-                            input = false;
-                        }
-                        else{
-                            cout<< "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
-                        }
-                    }
-                    propInput = false; //reset
-                }
-                /*cout<< "Enter Position: ";
-                int pos;
-                cin>> pos;
-                cout<<"Enter data"<<endl;
-                int randData;
-                cin>> randData;
-                ready1->addPCB(pos,randData);*/
-                break;
-            }
-            case 2: {
-                /*cout<<"Enter data"<<endl;
-                 int randData;
-                 cin>> randData;
-                 ready1->addPCB(randData);*/
-                break;
-            }
-            case 3: {
-                /*cout<<"What is the PID of the PCB you wish to delete?";
-                int PID;
-                cin>>PID;
-                int delPID = ready1->deletePCB(PID);
-                if(delPID != 0)
-                    cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
-                else{}*/
-                break;
-            }
-            case 4: {
-                /*cout<< "Deleting PCB at beginning of queue "<<endl;
-                int PID = ready1->deletePCB();
-                if(PID != 0)
-                    cout<<"The PID of PCB removed is: "<< PID <<endl<<endl;
-                else{}*/
-                break;
-            }
-            case 5: {
-                ifstream fin;
-                readFile(fin);
                 List * ready = new List();
-                firstComeFirstServe(fin, ready);
+                string input = "";
+                cout << "Choose a Input Method :\n"
+                << "\t [1] User Input \n"
+                << "\t [2] Text file \n"<<endl;
+                cin>>input;
+                if(input == "1"){
+                    userInput(ready, 1); //1 indicates FCFS
+                    
+                }
+                else if(input == "2"){
+                    ifstream fin;
+                    readFile(fin);
+                    firstComeFirstServe(fin, ready);
+                }
+                else{
+                    cout<<"Invalid input!"<<endl;
+                }
+                cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
                 delete ready;
                 break;
                 
             }
-            case 6: {
-                ifstream fin;
-                readFile(fin);
+            case 2: {
                 List * ready = new List();
-                npPriority(fin, ready);
+                string input = "";
+                cout << "Choose a Input Method :\n"
+                << "\t [1] User Input \n"
+                << "\t [2] Text file \n"<<endl;
+                cin>>input;
+                if(input == "1"){
+                    userInput(ready, 2); //1 indicates Priority
+                }
+                else{
+                    ifstream fin;
+                    readFile(fin);
+                    npPriority(fin, ready);
+                }
+                cout<<"Queue contents:"<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
                 delete ready;
                 break;
             }
-            case 7: {
+            case 3: {
                 ifstream fin;
                 readFile(fin);
                 List * ready = new List();
@@ -311,4 +260,58 @@ void readFile(ifstream &fin){
         }
     }
 }
-
+void userInput(List*& ready, int option){
+    int PID = 0;
+    int arr = 0;
+    int burst = 0;
+    int prior = 0;
+    int q;
+    bool input = true;
+    bool propInput = false;
+    string inpChoice;
+    while(input == true){
+        cin.clear();
+        cout<<"Please enter Process PID: ";
+        cin>> PID;
+        cout<<"Please enter Arrival Time: ";
+        cin>> arr;
+        cout<<"Please enter Burst Time: ";
+        cin>> burst;
+        cout<<"Please enter Priority: ";
+        cin>> prior;
+        cout<<"Please enter Q value: ";
+        cin>>q;
+        if(option == 1)
+            ready->addPCB(PID,arr,burst,prior);
+        else if(option ==2)
+            ready->priorityInsert(PID,arr,burst,prior);
+        else//RR
+            ready->addPCB(PID,arr,burst,prior,q);
+        while(propInput == false){
+            //cin.clear();
+            cout<<endl;
+            cout<<"Press 1 to input another process \n"
+            << "Press 2 to quit \n \n";
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cin>>inpChoice;
+            //cout<<endl;
+            if(inpChoice == "1"){
+                propInput = true;
+            }
+            else if(inpChoice == "2"){
+                propInput = true;
+                input = false;
+            }
+            else{
+                cout<< "Incorrect option please enter a correct number corresponding to the menu!"<< endl << endl << endl;
+            }
+        }
+        propInput = false; //reset
+        
+    }
+    if(option ==1 || option ==2)
+        cout<<"Average Waiting Time: "<< ready->calcAvgWaitTime() <<endl<<endl;
+    else
+        cout<<"Average Waiting Time: "<< ready->calcRRWaitTime(q)<<endl<<endl;
+}
