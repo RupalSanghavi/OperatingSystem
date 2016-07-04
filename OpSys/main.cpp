@@ -223,7 +223,7 @@ void memoryMgmt(){
                 }
                 else if(input == "2"){
                     ifstream fin;
-                    readMemMgmtFile(fin,ready);
+                    //readMemMgmtFile(fin,ready);
                     bestFit(fin, ready);
                 }
                 else{
@@ -384,10 +384,11 @@ void bestFit(ifstream &fin, List*& ready2){
             cout<< "External fragmentation for process size : "<< procs[i]<<endl;
         else {
             memFilled[bestFitIndex] = procs[i];
-            if(procs[i] < memFilled[bestFitIndex]) //size requested doesn't fully take up partition
+            if(procs[i] < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
                 cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
         }
-        
+        smallestDiff = 1000;
+        bestFitIndex = 0;
         found = false;
     }
     
