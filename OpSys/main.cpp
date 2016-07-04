@@ -17,6 +17,7 @@ void readMemMgmtFile(ifstream &fin, List*& ready2);
 void firstFit(ifstream &fin, List*& ready2);
 void memoryMgmt();
 void bestFit(ifstream &fin, List*& ready2);
+void worstFit(ifstream &fin, List*& ready2);
 
 int main(int argc, char *argv[])
 {
@@ -244,17 +245,19 @@ void memoryMgmt(){
                 << "\t [2] Text file \n"<<endl;
                 cin>>input;
                 if(input == "1"){
-                    userInput(ready, 3); //1 indicates Priority
+                    userInput(ready, 2); //1 indicates Priority
+                }
+                else if(input == "2"){
+                    ifstream fin;
+                    //readMemMgmtFile(fin,ready);
+                    worstFit(fin, ready);
                 }
                 else{
-                    ifstream fin;
-                    readFile(fin);
-                    avgWait = roundRobin(fin, ready);
+                    cout<< "Invalid Input!"<<endl;
                 }
-                cout<<"Queue contents:"<<endl;
-                ready->printVals();
-                cout<<endl<<endl;
-                cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+                //                cout<<"Queue contents:"<<endl;
+                //                ready->printVals();
+                //                cout<<endl<<endl;
                 delete ready;
                 break;
             }
@@ -388,6 +391,40 @@ void bestFit(ifstream &fin, List*& ready2){
                 cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
         }
         smallestDiff = 1000;
+        bestFitIndex = 0;
+        found = false;
+    }
+    
+    cout<<endl;
+}
+void worstFit(ifstream &fin, List*& ready2){
+    int biggestDiff = 0;
+    int bestFitIndex = 0;
+    vector<int> memPrt = {300,600,350,200,750,125};
+    vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
+    vector<int> procs = {115,500,358,200,375};
+    bool found = false;
+    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
+        for(int j = 0; j < memPrt.size(); j++){
+            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
+                //memFilled[j] = procs[i];
+                int diff = memPrt[j] - procs[i];
+                if(diff > biggestDiff){
+                    biggestDiff = diff;
+                    bestFitIndex = j;
+                }
+                found = true;
+            }
+        }
+        
+        if(found == false) //no partition available
+            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
+        else {
+            memFilled[bestFitIndex] = procs[i];
+            if(procs[i] < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
+                cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
+        }
+        biggestDiff = 0;
         bestFitIndex = 0;
         found = false;
     }
