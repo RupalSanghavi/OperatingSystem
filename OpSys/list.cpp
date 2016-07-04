@@ -94,8 +94,14 @@ int List::deletePCB(int PID){
           return 0;
         }
     }
-  temp->getRight()->setLeft(temp->getLeft()); //set right node's left pointer to point to left node
-  temp->getLeft()->setRight(temp->getRight()); //and the opposite
+    if(temp->getRight()!=nullptr){
+        if(head == temp)//node being deleted is head node
+            head = temp->getRight();
+        temp->getRight()->setLeft(temp->getLeft()); //set right node's left pointer to point to left node
+    }
+    if(temp->getLeft()!=nullptr){
+        temp->getLeft()->setRight(temp->getRight()); //and the opposite
+    }
   int retPID = temp->getPID();
   delete temp;
   return retPID;

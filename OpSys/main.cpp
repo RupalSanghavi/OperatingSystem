@@ -13,7 +13,7 @@ double npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
 double roundRobin(ifstream &fin, List*& ready2);
 void userInput(List*& ready, int option);
-
+void delPCBWithPID(List*& ready);
 
 int main(int argc, char *argv[])
 {
@@ -95,6 +95,18 @@ void processMgmt(List *&waiting1){
                 ready->printVals();
                 cout<<endl<<endl;
                 cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+                int del = 0;
+                cout<< "Would you like to delete a PCB from the default location? Enter 1 for yes, 2 for no. "<<endl;
+                cin>>del;
+                cout<<endl;
+                if(del == 1){
+                    ready->deletePCB();
+                    cout<<"Queue contents after deletion:"<<endl;
+                    ready->printVals();
+                    cout<<endl<<endl;
+                }
+                else{}
+                delPCBWithPID(ready);
                 delete ready;
                 break;
                 
@@ -250,6 +262,22 @@ void readFile(ifstream &fin){
             fin.open(file);
         }
     }
+}
+void delPCBWithPID(List*& ready){
+    int del = 0;
+    cout<< "Would you like to delete a PCB with a specific PID? Enter 1 for yes, 2 for no. "<<endl;
+    cin>>del;
+    cout<<endl<<endl;
+    if(del == 1){
+        int PID = 0;
+        cout<<"What is the PID of the PCB you wish to delete?";
+        cin>>PID;
+        ready->deletePCB(PID);
+        cout<<"Queue contents after deletion:"<<endl;
+        ready->printVals();
+        cout<<endl<<endl;
+    }
+    else{}
 }
 void userInput(List*& ready, int option){
     int PID = 0;
