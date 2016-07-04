@@ -72,7 +72,9 @@ void processMgmt(List *&waiting1){
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         switch(choice){
             case 1: {
+                cout<<"This implementation of FCFS adds PCBs at the default location. "<<endl<<endl;
                 List * ready = new List();
+                List * waiting = new List();
                 string input = "";
                 double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
@@ -91,7 +93,7 @@ void processMgmt(List *&waiting1){
                 else{
                     cout<<"Invalid input!"<<endl;
                 }
-                cout<<"Queue contents:"<<endl;
+                cout<<"Ready queue contents:"<<endl<<endl;
                 ready->printVals();
                 cout<<endl<<endl;
                 cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
@@ -113,6 +115,7 @@ void processMgmt(List *&waiting1){
             }
             case 2: {
                 List * ready = new List();
+                List * waiting = new List();
                 string input = "";
                 double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
@@ -127,15 +130,18 @@ void processMgmt(List *&waiting1){
                     readFile(fin);
                     avgWait = npPriority(fin, ready);
                 }
-                cout<<"Queue contents:"<<endl;
+                cout<<"Ready queue contents:"<<endl<<endl;
                 ready->printVals();
+                cout<<"Waiting queue contents:"<<endl;
                 cout<<endl<<endl;
                 cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
+                delPCBWithPID(ready);
                 delete ready;
                 break;
             }
             case 3: {
                 List * ready = new List();
+                List * waiting = new List();
                 string input = "";
                 double avgWait = 0.0;
                 cout << "Choose a Input Method :\n"
@@ -150,8 +156,9 @@ void processMgmt(List *&waiting1){
                     readFile(fin);
                     avgWait = roundRobin(fin, ready);
                 }
-                cout<<"Queue contents:"<<endl;
+                cout<<"Ready queue contents:"<<endl<<endl;
                 ready->printVals();
+                cout<<"Waiting queue contents:"<<endl;
                 cout<<endl<<endl;
                 cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
