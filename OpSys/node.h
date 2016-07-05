@@ -25,11 +25,13 @@ private:
     int cumulativeTime;
     int prevFinTime;
     int totalWait;
+    int duration;
+    int memReq;
     
     
 public:
     Node();
-    Node(int PID1, int arrivalTime1, int burstTime1, int priority1);
+    Node(int PID1, int arrivalTime1, int burstTime1 = 0, int priority1 = 0, int duration1 = 0, int memReq1 = 0);
     void setLeft(Node * obj);
     void setRight(Node* obj);
     void setRemainBurstTime(int remainBurstTime1);

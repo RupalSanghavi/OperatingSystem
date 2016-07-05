@@ -11,9 +11,47 @@ List::List()
   tail = nullptr;
   queueTotalTime = 0;
 }
-//default, add to back of queue
-void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priority1){
+/*void List::priorityMgmtInsert(int PID1, int arrivalTime1, int duration1, int memReq1){
     Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1); //create a node with all the data
+    if(head == nullptr){
+        head = obj;
+        tail = obj;
+    }
+    else{
+        Node * temp = head;
+        while(temp->getPriority() < priority1)
+        {
+            //cout<<temp->getPID();
+            if(temp->getRight() == nullptr){ //if node needs to be added at end
+                temp->setRight(obj);
+                obj->setLeft(temp);
+                return;
+            }
+            
+            temp = temp->getRight();
+            if(temp == nullptr) //NEED TO FIX
+                break;
+            
+        }
+        //to place at beginning
+        if(temp== head){
+            obj->setRight(head);
+            head->setLeft(obj);
+            head = obj;
+        }
+        else{
+            //put node before the current one temp is pointing to
+            obj->setLeft(temp->getLeft());
+            obj->setRight(temp);
+            temp->getLeft()->setRight(obj);
+            temp->setLeft(obj);
+        }
+        
+    }
+}*/
+//default, add to back of queue
+void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priority1, int duration1, int memReq1){
+    Node * obj = new Node(PID1, arrivalTime1, burstTime1, priority1, duration1, memReq1); //create a node with all the data
     if(head == nullptr){
         head = obj;
         tail = obj;

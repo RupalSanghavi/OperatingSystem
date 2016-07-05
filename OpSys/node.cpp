@@ -15,7 +15,7 @@ Node::Node()
     left = nullptr;
     right = nullptr;
 }
-Node::Node(int PID1, int arrivalTime1, int burstTime1, int priority1){
+Node::Node(int PID1, int arrivalTime1, int burstTime1, int priority1, int duration1, int memReq1){
     this->PID = PID1;
     this->arrivalTime = arrivalTime1;
     this->burstTime = burstTime1;
@@ -26,8 +26,24 @@ Node::Node(int PID1, int arrivalTime1, int burstTime1, int priority1){
     cumulativeTime = 0;
     prevFinTime = 0;
     totalWait = 0;
+    duration = duration1;
+    memReq = memReq1;
 }
-
+/*
+Node::Node(int PID1, int arrivalTime1, int duration1, int memReq1){
+    this->PID = PID1;
+    this->arrivalTime = arrivalTime1;
+    burstTime = 0;
+    remainBurstTime = 0;
+    this->priority = arrivalTime1;
+    this->left = nullptr; //initialize
+    this->right = nullptr;
+    duration = duration1;
+    memReq = memReq1;
+    cumulativeTime = 0;
+    prevFinTime = 0;
+    totalWait = 0;
+}*/
 void Node::setLeft(Node * obj){
     this->left = obj;
 }

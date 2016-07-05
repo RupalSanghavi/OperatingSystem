@@ -203,9 +203,9 @@ void memoryMgmt(){
                 else{
                     cout<<"Invalid input!"<<endl;
                 }
-                //cout<<"Queue contents:"<<endl;
-                //ready->printVals();
-                //cout<<endl<<endl;
+                cout<<"Queue contents:"<<endl;
+                ready->printVals();
+                cout<<endl<<endl;
                 //cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
                 break;
@@ -327,7 +327,9 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
             if(ss.peek() == ',')
                 ss.ignore();
         }
-        ready2->addPCB(data[0],data[1],data[2],data[3]); //default tail insertion due to FCFS
+        //void priorityInsert(int PID1, int arrivalTime1, int burstTime1 = 0, int priority1 = 0, int duration1 = 0, int memReq1= 0);
+
+        ready2->priorityInsert(data[0],data[1],0,data[1],data[2],data[3]); 
         
         line = "";
         data.clear();
@@ -336,15 +338,9 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
     
 }
 void firstFit(ifstream &fin, List*& ready2){
-    int p1 = 300;
-    int p2 = 600;
-    int p3 = 350;
-    int p4 = 200;
-    int p5 = 750;
-    int p6 = 125;
     vector<int> memPrt = {300,600,350,200,750,125};
     vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
-    vector<int> procs = {115,500,358,200,375};
+    //vector<int> procs = {115,500,358,200,375};
     bool found = false;
     for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
         for(int j = 0; j < memPrt.size(); j++){

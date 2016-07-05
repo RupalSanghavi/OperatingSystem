@@ -11,7 +11,7 @@ private:
 public:
     List();
     void addPCB(int PID1, int arrivalTime1, int burstTime1, int priority1, int Q = 0);
-    void priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priority1);
+    void priorityInsert(int PID1, int arrivalTime1, int burstTime1 = 0, int priority1 = 0, int duration1 = 0, int memReq1= 0);
     double calcAvgWaitTime();
     double calcRRWaitTime(int Q);
     int deletePCB(int PID); //change to data?
