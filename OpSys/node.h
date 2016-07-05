@@ -45,6 +45,7 @@ public:
     int getBurstTime();
     int getArrivalTime();
     void display();
+    int getMemReq();
 };
 
 #endif // NODE_H

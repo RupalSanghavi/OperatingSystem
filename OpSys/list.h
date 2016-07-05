@@ -20,6 +20,7 @@ public:
     int getQueueTotalTime();
     void insertRoundRobin(int Q);
     void calcTotalTime(int Q);
+    Node* getHead();
     ~List();
 };
 

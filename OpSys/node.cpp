@@ -92,3 +92,6 @@ int Node::getRemainBurstTime(){
 int Node::getArrivalTime(){
     return arrivalTime;
 }
+int Node::getMemReq(){
+    return memReq;
+}

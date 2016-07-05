@@ -339,23 +339,39 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
 }
 void firstFit(ifstream &fin, List*& ready2){
     vector<int> memPrt = {300,600,350,200,750,125};
-    vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
+    vector<Node *> memFilled(memPrt.size()); //initialize 5 spots to zero
     //vector<int> procs = {115,500,358,200,375};
     bool found = false;
-    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
+    Node * temp = ready2->getHead();
+    while(temp!= nullptr){
         for(int j = 0; j < memPrt.size(); j++){
-            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
-                memFilled[j] = procs[i];
+            if((temp->getMemReq() <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
+                memFilled[j] = temp;
                 found = true;
-                if(procs[i] < memPrt[j]) //size requested doesn't fully take up partition
-                    cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
+                if(temp->getMemReq() < memPrt[j]) //size requested doesn't fully take up partition
+                    cout<<"Internal fragmentation for process size : "<< temp->getMemReq() <<endl;
                 break;
             }
         }
         if(found == false) //no partition available
-            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
+            cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
         found = false;
+        temp = temp->getRight();
     }
+//    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
+//        for(int j = 0; j < memPrt.size(); j++){
+//            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
+//                memFilled[j] = procs[i];
+//                found = true;
+//                if(procs[i] < memPrt[j]) //size requested doesn't fully take up partition
+//                    cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
+//                break;
+//            }
+//        }
+//        if(found == false) //no partition available
+//            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
+//        found = false;
+//    }
     
     cout<<endl;
 }

@@ -294,6 +294,10 @@ void List::calcTotalTime(int Q){
     }
 
 }
+Node* List::getHead(){
+    return head;
+}
+
 List::~List(){
     if(head!= nullptr)
     {
