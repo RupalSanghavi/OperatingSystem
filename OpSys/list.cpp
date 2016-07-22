@@ -58,7 +58,7 @@ void List::priorityInsert(int PID1, int arrivalTime1, int burstTime1, int priori
     }
     else{
         Node * temp = head;
-        while(temp->getPriority() < priority1)
+        while(temp->getPriority() <= priority1)
         {
             //cout<<temp->getPID();
             if(temp->getRight() == nullptr){ //if node needs to be added at end

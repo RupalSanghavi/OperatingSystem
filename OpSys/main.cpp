@@ -349,6 +349,26 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
        
         data.clear();
     }
+    int numProc =0;
+    fin>>numProc;
+    fin.ignore (std::numeric_limits<std::streamsize>::max(), '\n');
+    for(int i = 0; i<numProc;i++){
+        getline(fin,line,'\n');
+        //getline(fin,line,',');
+        //fin>>blah;
+        
+        stringstream ss(line);
+        int x;
+        while(ss>>x){
+            data.push_back(x);
+            if(ss.peek() == ',')
+                ss.ignore();
+        }
+        //void priorityInsert(int PID1, int arrivalTime1, int burstTime1 = 0, int priority1 = 0, int duration1 = 0, int memReq1= 0);
+        
+        ready2->priorityInsert(data[0],data[1],0,data[1],data[2],data[3]);
+        data.clear();
+    }
     cout<<"yo mama";
     /*
     string line = "";
