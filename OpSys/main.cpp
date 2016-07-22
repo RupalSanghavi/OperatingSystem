@@ -318,6 +318,40 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
         }
     }
     string line = "";
+    string blah = "";
+    int memSize = 0;
+    int numSpaces = 0;
+    int startAdd = 0;
+    int availSpace = 0;
+    vector<int> data;
+    vector<int> memory;
+    vector<int> baseAdds;
+    fin>> memSize;
+    fin>> numSpaces;
+    fin.ignore (std::numeric_limits<std::streamsize>::max(), '\n');
+    for(int i = 0; i<numSpaces;i++){
+        //fin>>line;
+        
+        //fin>>blah;
+        getline(fin,line,'\n');
+        //getline(fin,line,',');
+        //fin>>blah;
+        
+        stringstream ss(line);
+        int x;
+        while(ss>>x){
+            data.push_back(x);
+            if(ss.peek() == ',')
+                ss.ignore();
+        }
+        baseAdds.push_back(data[0]);
+        memory.push_back(data[1]);
+       
+        data.clear();
+    }
+    cout<<"yo mama";
+    /*
+    string line = "";
     vector<int> data;
     while(!fin.eof()){
         getline(fin,line,'\n');
@@ -336,7 +370,7 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
         
         line = "";
         data.clear();
-    }
+    }*/
     
     
 }
