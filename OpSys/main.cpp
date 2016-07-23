@@ -456,7 +456,7 @@ void display(int choice, vector<vector<Node*>>& memFilled, vector<int>& baseAdds
     }
     cout<<endl;
     //double memUtil = (double(totMem) - double(memAvail))/double(totMem);
-    double memUtil = memUsed/double(totMem);
+    double memUtil = double(memUsed)/double(totMem);
     cout<<"Memory Utilization: " << setprecision(2) << fixed<< memUtil <<endl;
     cout<<"Blocking Probability: "<< setprecision(2)<<fixed<< (double(numProc)-double(procsAssigned))/double(numProc) <<endl;
 }
