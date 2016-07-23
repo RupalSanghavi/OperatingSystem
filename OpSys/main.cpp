@@ -518,7 +518,7 @@ void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
         memAvail += memPrt[i];
     }
     //int totMem = memAvail;
-    vector<Node *> memFilled(memPrt.size());
+    vector<vector<Node *>> memFilled(memPrt.size());
     vector<int> blocked;
     //vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
     //vector<int> procs = {115,500,358,200,375};
@@ -526,7 +526,7 @@ void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
     Node * temp = ready2->getHead();
     while(temp!= nullptr){
         for(int j = 0; j < memPrt.size(); j++){
-                if((temp->getMemReq() <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
+                if(temp->getMemReq() <= memPrt[j]){//found an open partition
                     //memFilled[j] = procs[i];
                     int diff = memPrt[j] - temp->getMemReq();
                     if(diff > biggestDiff){
@@ -541,8 +541,9 @@ void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
             blocked.push_back(temp->getPID());
             //cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
         else {
-            memFilled[bestFitIndex] = temp;
+            memFilled[bestFitIndex].push_back(temp);
             //memFilled[bestFitIndex] = temp->getMemReq();
+            memPrt[bestFitIndex] -= temp->getMemReq();
             memAvail -= temp->getMemReq();
 //            if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
 //                cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
@@ -553,7 +554,7 @@ void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
         temp = temp->getRight();
     }
     cout<<"Algorithm: Worst Fit"<<endl;
-    //display(3, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
+    display(3, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     cout<<endl;
 }
 double npPriority(ifstream &fin, List*& ready2){
