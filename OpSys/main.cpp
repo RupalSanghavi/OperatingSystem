@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <sstream>
@@ -13,11 +14,12 @@ double npPriority(ifstream &fin, List*& ready2);
 void readFile(ifstream &fin);
 double roundRobin(ifstream &fin, List*& ready2);
 void userInput(List*& ready, int option);
-void readMemMgmtFile(ifstream &fin, List*& ready2);
-void firstFit(ifstream &fin, List*& ready2);
+void readMemMgmtFile(ifstream &fin, List*& ready2, vector<int>& memory, vector<int>& baseAdds, int& numProc, int& memSize);
+void firstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds,int numProc,int totMem);
 void memoryMgmt();
-void bestFit(ifstream &fin, List*& ready2);
-void worstFit(ifstream &fin, List*& ready2);
+void bestFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem);
+void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem);
+void display(int choice, vector<Node*>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc);
 
 int main(int argc, char *argv[])
 {
@@ -183,7 +185,7 @@ void memoryMgmt(){
         cout << "Select: "<< endl;
         cin >> choice;
         cout << endl;
-        
+        int memSize = 0;
         // Conditional to run correct mode for the choice or if wrong choice displays a error message
         switch(choice){
             case 1: {
@@ -200,15 +202,19 @@ void memoryMgmt(){
                 }
                 else if(input == "2"){
                     ifstream fin;
-                    readMemMgmtFile(fin,ready);
-                    firstFit(fin, ready);
+                    vector<int> baseAdds;
+                    vector<int> memory;
+                    int numProc = 0;
+                    readMemMgmtFile(fin,ready, memory, baseAdds,numProc, memSize);
+                    //cout<<"Queue contents:"<<endl;
+                    //ready->printVals();
+                    cout<<endl<<endl;
+                    firstFit(fin, ready, memory, baseAdds,numProc, memSize);
                 }
                 else{
                     cout<<"Invalid input!"<<endl;
                 }
-                cout<<"Queue contents:"<<endl;
-                ready->printVals();
-                cout<<endl<<endl;
+                
                 //cout<<"Average Waiting Time: "<< avgWait <<endl<<endl;
                 delete ready;
                 break;
@@ -227,8 +233,11 @@ void memoryMgmt(){
                 }
                 else if(input == "2"){
                     ifstream fin;
-                    readMemMgmtFile(fin,ready);
-                    bestFit(fin, ready);
+                    vector<int> baseAdds;
+                    vector<int> memory;
+                    int numProc = 0;
+                    readMemMgmtFile(fin,ready,memory, baseAdds,numProc, memSize);
+                    bestFit(fin, ready, memory, baseAdds,numProc, memSize);
                 }
                 else{
                     cout<< "Invalid Input!"<<endl;
@@ -252,8 +261,11 @@ void memoryMgmt(){
                 }
                 else if(input == "2"){
                     ifstream fin;
-                    readMemMgmtFile(fin,ready);
-                    worstFit(fin, ready);
+                    vector<int> baseAdds;
+                    vector<int> memory;
+                    int numProc = 0;
+                    readMemMgmtFile(fin,ready,memory, baseAdds, numProc, memSize);
+                    worstFit(fin, ready, memory, baseAdds, numProc, memSize);
                 }
                 else{
                     cout<< "Invalid Input!"<<endl;
@@ -299,7 +311,7 @@ double firstComeFirstServe(ifstream &fin, List*& ready2){
     return avgWait;
     
 }
-void readMemMgmtFile(ifstream &fin, List*& ready2){
+void readMemMgmtFile(ifstream &fin, List*& ready2, vector<int>& memory, vector<int>& baseAdds, int& numProc, int& memSize){
     cout<<"Please enter name of text file: ";
     string file;
     //add check to see if actually able to open text file
@@ -319,13 +331,13 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
     }
     string line = "";
     string blah = "";
-    int memSize = 0;
+    //int memSize = 0;
     int numSpaces = 0;
     int startAdd = 0;
     int availSpace = 0;
     vector<int> data;
-    vector<int> memory;
-    vector<int> baseAdds;
+    //vector<int> memory;
+    //vector<int> baseAdds;
     fin>> memSize;
     fin>> numSpaces;
     fin.ignore (std::numeric_limits<std::streamsize>::max(), '\n');
@@ -349,7 +361,7 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
        
         data.clear();
     }
-    int numProc =0;
+    //int numProc =0;
     fin>>numProc;
     fin.ignore (std::numeric_limits<std::streamsize>::max(), '\n');
     for(int i = 0; i<numProc;i++){
@@ -369,38 +381,17 @@ void readMemMgmtFile(ifstream &fin, List*& ready2){
         ready2->priorityInsert(data[0],data[1],0,data[1],data[2],data[3]);
         data.clear();
     }
-    cout<<"yo mama";
-    /*
-    string line = "";
-    vector<int> data;
-    while(!fin.eof()){
-        getline(fin,line,'\n');
-        if(line == "")//if eof didn't work
-            break;
-        stringstream ss(line);
-        int x;
-        while(ss>>x){
-            data.push_back(x);
-            if(ss.peek() == ',')
-                ss.ignore();
-        }
-        //void priorityInsert(int PID1, int arrivalTime1, int burstTime1 = 0, int priority1 = 0, int duration1 = 0, int memReq1= 0);
 
-        ready2->priorityInsert(data[0],data[1],0,data[1],data[2],data[3]); 
-        
-        line = "";
-        data.clear();
-    }*/
-    
-    
 }
-void firstFit(ifstream &fin, List*& ready2){
+void firstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem){
     int memAvail = 0;
-    vector<int> memPrt = {300,600,350,200,750,125};
+    //vector<int> memPrt = {300,600,350,200,750,125};
     for(int i = 0 ; i < memPrt.size(); i++){
         memAvail += memPrt[i];
     }
+    //int totMem = memAvail;
     vector<Node *> memFilled(memPrt.size()); //initialize 5 spots to zero
+    vector<int> blocked;
     //vector<int> procs = {115,500,358,200,375};
     bool found = false;
     Node * temp = ready2->getHead();
@@ -410,42 +401,64 @@ void firstFit(ifstream &fin, List*& ready2){
                 memFilled[j] = temp;
                 
                 found = true;
-                if(temp->getMemReq() < memPrt[j]) //size requested doesn't fully take up partition
-                    cout<<"Internal fragmentation for process size : "<< temp->getMemReq() <<endl;
+//                if(temp->getMemReq() < memPrt[j]) //size requested doesn't fully take up partition
+//                    cout<<"Internal fragmentation for process size : "<< temp->getMemReq() <<endl;
                 memAvail -= temp->getMemReq(); //CHANGE TO -= memFilled[j]??
                 break;
             }
         }
-        if(found == false) //no partition available
-            cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
+        if(found == false){ //no partition available
+//            cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
+            blocked.push_back(temp->getPID());
+        }
         found = false;
         temp = temp->getRight();
     }
-//    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
-//        for(int j = 0; j < memPrt.size(); j++){
-//            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
-//                memFilled[j] = procs[i];
-//                found = true;
-//                if(procs[i] < memPrt[j]) //size requested doesn't fully take up partition
-//                    cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
-//                break;
-//            }
-//        }
-//        if(found == false) //no partition available
-//            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
-//        found = false;
-//    }
-    
+    cout<<"Algorithm: First Fit"<<endl<<endl;
+    display(1, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     cout<<endl;
 }
-void bestFit(ifstream &fin, List*& ready2){
+void display(int choice, vector<Node*>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc){
+    cout<<"Ready Queue contents: "<<endl;
+    int memUsed = 0;
+    for(int i = 0; i< memFilled.size(); i++){
+        Node* node = memFilled[i];
+        if(node != nullptr){
+            node->display();
+            memUsed += node->getMemReq();
+        }
+    }
+    cout<<endl;
+    cout<<"Assigned Processes: "<<endl;
+    int procsAssigned = 0;
+    for(int i = 0; i< memFilled.size(); i++){
+        Node* node = memFilled[i];
+        if(node != nullptr){
+            procsAssigned++;
+            cout<< "PID: "<<node->getPID() << " Base address: "<<baseAdds[i]<< " Length: "<<memPrt[i]<<endl;
+        }
+    }
+    cout<<endl;
+    cout<<"Blocked Processes: ";
+    for(int i = 0; i<blocked.size(); i++){
+        cout<<"PID: "<< blocked[i] <<" ";
+    }
+    cout<<endl;
+    //double memUtil = (double(totMem) - double(memAvail))/double(totMem);
+    double memUtil = memUsed/double(totMem);
+    cout<<"Memory Utilization: " << setprecision(2) << fixed<< memUtil <<endl;
+    cout<<"Blocking Probability: "<< setprecision(2)<<fixed<< (double(numProc)-double(procsAssigned))/double(numProc) <<endl;
+}
+void bestFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem){
     int smallestDiff = 1000;
     int bestFitIndex = 0;
     int memAvail = 0;
-    vector<int> memPrt = {300,600,350,200,750,125};
+    //vector<int> memPrt = {300,600,350,200,750,125};
     for(int i = 0 ; i < memPrt.size(); i++){
         memAvail += memPrt[i];
     }
+    //int totMem = memAvail;
+    vector<int> blocked;
     //vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
     vector<Node *> memFilled(memPrt.size());
     //vector<int> procs = {115,500,358,200,375};
@@ -465,55 +478,37 @@ void bestFit(ifstream &fin, List*& ready2){
         }
 
         if(found == false) //no partition available
-            cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
+            blocked.push_back(temp->getPID());
+            //cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
         else {
             memFilled[bestFitIndex] = temp;
             memAvail -= temp->getMemReq();
-            if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
-                cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
+            //if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
+                //cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
         }
         smallestDiff = 1000;
         bestFitIndex = 0;
         found = false;
         temp = temp->getRight();
     }
-//    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
-//        for(int j = 0; j < memPrt.size(); j++){
-//            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
-//                //memFilled[j] = procs[i];
-//                int diff = memPrt[j] - procs[i];
-//                if(diff < smallestDiff){
-//                    smallestDiff = diff;
-//                    bestFitIndex = j;
-//                }
-//                found = true;
-//            }
-//        }
-//        
-//        if(found == false) //no partition available
-//            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
-//        else {
-//            memFilled[bestFitIndex] = procs[i];
-//            if(procs[i] < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
-//                cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
-//        }
-//        smallestDiff = 1000;
-//        bestFitIndex = 0;
-//        found = false;
-//    }
+    cout<<"Algorithm: Best Fit"<<endl;
+    display(2, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     
     cout<<endl;
 }
-void worstFit(ifstream &fin, List*& ready2){
+void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem){
     int biggestDiff = 0;
     int bestFitIndex = 0;
     int memAvail = 0;
-    vector<int> memPrt = {300,600,350,200,750,125};
+    //vector<int> memPrt = {300,600,350,200,750,125};
     for(int i = 0 ; i < memPrt.size(); i++){
         memAvail += memPrt[i];
     }
-    vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
-    vector<int> procs = {115,500,358,200,375};
+    //int totMem = memAvail;
+    vector<Node *> memFilled(memPrt.size());
+    vector<int> blocked;
+    //vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
+    //vector<int> procs = {115,500,358,200,375};
     bool found = false;
     Node * temp = ready2->getHead();
     while(temp!= nullptr){
@@ -530,45 +525,22 @@ void worstFit(ifstream &fin, List*& ready2){
         }
         
         if(found == false) //no partition available
-            cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
+            blocked.push_back(temp->getPID());
+            //cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
         else {
-            memFilled[bestFitIndex] = temp->getMemReq();
+            memFilled[bestFitIndex] = temp;
+            //memFilled[bestFitIndex] = temp->getMemReq();
             memAvail -= temp->getMemReq();
-            if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
-                cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
+//            if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
+//                cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
         }
         biggestDiff = 0;
         bestFitIndex = 0;
         found = false;
         temp = temp->getRight();
     }
-
-//    for(int i = 0; i < procs.size(); i++){//change to iterate through linked list
-//        for(int j = 0; j < memPrt.size(); j++){
-//            if((procs[i] <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
-//                //memFilled[j] = procs[i];
-//                int diff = memPrt[j] - procs[i];
-//                if(diff > biggestDiff){
-//                    biggestDiff = diff;
-//                    bestFitIndex = j;
-//                }
-//                found = true;
-//            }
-//        }
-//        
-//        if(found == false) //no partition available
-//            cout<< "External fragmentation for process size : "<< procs[i]<<endl;
-//        else {
-//            memFilled[bestFitIndex] = procs[i];
-//            memAvail -= temp->getMemReq();
-//            if(procs[i] < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
-//                cout<<"Internal fragmentation for process size : "<< procs[i]<<endl;
-//        }
-//        biggestDiff = 0;
-//        bestFitIndex = 0;
-//        found = false;
-//    }
-    
+    cout<<"Algorithm: Worst Fit"<<endl;
+    display(3, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     cout<<endl;
 }
 double npPriority(ifstream &fin, List*& ready2){
