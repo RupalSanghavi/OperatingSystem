@@ -19,7 +19,7 @@ void firstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
 void memoryMgmt();
 void bestFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem);
 void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& baseAdds, int numProc, int totMem);
-void display(int choice, vector<Node*>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc);
+void display(int choice, vector<vector<Node*>>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc);
 
 int main(int argc, char *argv[])
 {
@@ -390,16 +390,16 @@ void firstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
         memAvail += memPrt[i];
     }
     //int totMem = memAvail;
-    vector<Node *> memFilled(memPrt.size()); //initialize 5 spots to zero
+    vector<vector<Node *>> memFilled(memPrt.size()); //initialize 5 spots to zero
     vector<int> blocked;
     //vector<int> procs = {115,500,358,200,375};
     bool found = false;
     Node * temp = ready2->getHead();
     while(temp!= nullptr){
         for(int j = 0; j < memPrt.size(); j++){
-            if((temp->getMemReq() <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
-                memFilled[j] = temp;
-                
+            if((temp->getMemReq() <= memPrt[j])){//found an open partition
+                memFilled[j].push_back(temp);
+                memPrt[j] -= temp->getMemReq(); //to calculate remaining memory in partition
                 found = true;
 //                if(temp->getMemReq() < memPrt[j]) //size requested doesn't fully take up partition
 //                    cout<<"Internal fragmentation for process size : "<< temp->getMemReq() <<endl;
@@ -418,25 +418,36 @@ void firstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
     display(1, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     cout<<endl;
 }
-void display(int choice, vector<Node*>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc){
+void display(int choice, vector<vector<Node*>>& memFilled, vector<int>& baseAdds, vector<int>& memPrt, vector<int>& blocked, int totMem, int memAvail, int numProc){
     cout<<"Ready Queue contents: "<<endl;
     int memUsed = 0;
     for(int i = 0; i< memFilled.size(); i++){
-        Node* node = memFilled[i];
-        if(node != nullptr){
-            node->display();
-            memUsed += node->getMemReq();
+        if(memFilled[i].size() != 0){
+            for(int j = 0; j<memFilled[i].size();j++){
+                memFilled[i][j]->display();
+                memUsed += memFilled[i][j]->getMemReq();
+            }
         }
     }
     cout<<endl;
     cout<<"Assigned Processes: "<<endl;
     int procsAssigned = 0;
     for(int i = 0; i< memFilled.size(); i++){
-        Node* node = memFilled[i];
-        if(node != nullptr){
-            procsAssigned++;
-            cout<< "PID: "<<node->getPID() << " Base address: "<<baseAdds[i]<< " Length: "<<memPrt[i]<<endl;
+        int size = memFilled[i].size();
+        if(size>1){
+            int base = baseAdds[i];
+            for(int j = 0; j<memFilled[i].size();j++){
+                procsAssigned++;
+                cout<< "PID: "<<memFilled[i][j]->getPID() << " Base address: "<<base<< " Length: "<<memFilled[i][j]->getMemReq()<<endl;
+                base += memFilled[i][j]->getMemReq();
+            }
         }
+        else if(size == 1){
+            procsAssigned++;
+            cout<< "PID: "<<memFilled[i][0]->getPID() << " Base address: "<<baseAdds[i]<< " Length: "<<memFilled[i][0]->getMemReq()<<endl;
+        }
+        else{}
+        
     }
     cout<<endl;
     cout<<"Blocked Processes: ";
@@ -460,14 +471,15 @@ void bestFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& bas
     //int totMem = memAvail;
     vector<int> blocked;
     //vector<int> memFilled(memPrt.size()); //initialize 5 spots to zero
-    vector<Node *> memFilled(memPrt.size());
+    vector<vector<Node *>> memFilled(memPrt.size());
     //vector<int> procs = {115,500,358,200,375};
     bool found = false;
     Node * temp = ready2->getHead();
     while(temp!= nullptr){
         for(int j = 0; j < memPrt.size(); j++){
-            if((temp->getMemReq() <= memPrt[j]) && (memFilled[j] == 0)){//found an open partition
+            if(temp->getMemReq() <= memPrt[j]){//found an open partition
                 //memFilled[j] = procs[i];
+                //to calculate remaining memory in partition
                 int diff = memPrt[j] - temp->getMemReq();
                 if(diff < smallestDiff){
                     smallestDiff = diff;
@@ -481,7 +493,8 @@ void bestFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& bas
             blocked.push_back(temp->getPID());
             //cout<< "External fragmentation for process size : "<< temp->getMemReq()<<endl;
         else {
-            memFilled[bestFitIndex] = temp;
+            memFilled[bestFitIndex].push_back(temp);
+            memPrt[bestFitIndex] -= temp->getMemReq();
             memAvail -= temp->getMemReq();
             //if(temp->getMemReq() < memPrt[bestFitIndex]) //size requested doesn't fully take up partition
                 //cout<<"Internal fragmentation for process size : "<< temp->getMemReq()<<endl;
@@ -540,7 +553,7 @@ void worstFit(ifstream &fin, List*& ready2, vector<int>& memPrt, vector<int>& ba
         temp = temp->getRight();
     }
     cout<<"Algorithm: Worst Fit"<<endl;
-    display(3, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
+    //display(3, memFilled, baseAdds, memPrt, blocked, totMem, memAvail, numProc);
     cout<<endl;
 }
 double npPriority(ifstream &fin, List*& ready2){
